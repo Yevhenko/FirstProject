@@ -4,7 +4,11 @@
   "description": "My first project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc --build",
+    "start:dev": "node dist/index.js",
+    "local:dev:typeorm": "npm run typeorm:dev",
+    "typeorm:dev": "ts-node ./node_modules/.bin/typeorm --config ormconfig.json"
   },
   "repository": {
     "type": "git",
@@ -18,6 +22,7 @@
   "homepage": "https://github.com/Yevhenko/FirstProject#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "ci": "^2.1.1",
     "express": "^4.17.1",
     "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",
