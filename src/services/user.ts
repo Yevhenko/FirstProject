@@ -3,7 +3,7 @@ import {IUser} from "../views";
 import {getRepository} from "typeorm";
 
 export const createUser = async (data: IUser): Promise<IUser> => {
-        const user = await getRepository(User).create(data);
+        const user = getRepository(User).create(data);
 
         const result = await getRepository(User).save(user);
 

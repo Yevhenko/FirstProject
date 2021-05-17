@@ -5,16 +5,16 @@
   "username": "admin",
   "password": "admin",
   "database": "admin",
-  "synchronize": false,
+  "synchronize": true,
   "logging": false,
   "entities": [
-    "dist/db/entity/*.js"
+   "dist/db/entity/*.js"
   ],
   "migrations": [
-    "dist/db/migration/*.js"
+   "dist/db/migration/*.js"
   ],
   "cli": {
-    "entitiesDir": "src/db/entity",
-    "migrationsDir": "src/db/migration"
+     "entitiesDir": "src/db/entity",
+     "migrationsDir": "src/db/migration"
   }
 }

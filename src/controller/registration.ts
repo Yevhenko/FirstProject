@@ -12,7 +12,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
         const user = await getUserByLogin(login);
 
         if (user) return res.status(403).send('User already exists');
-        const response = createUser(body);
+        const response = await createUser(body);
 
         return res.json(response);
 };
