@@ -21,3 +21,9 @@ export const getUserByLogin = async (login: string): Promise<IUser | null> => {
 
         return user;
 };
+
+export const getUsersFromDb = async (): Promise<IUser[]> => {
+  const users = await getRepository(User).find();
+
+  return users;
+};

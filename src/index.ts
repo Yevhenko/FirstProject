@@ -5,7 +5,7 @@ import express from 'express';
 import session from 'express-session';
 declare module "express-session" {
   interface Session {
-    auth: boolean;
+    login: string;
   }
 }
 import cookieParser = require('cookie-parser');
@@ -33,7 +33,6 @@ redisClient.on('error', function (err: Error) {
 redisClient.on('connect', function (err: Error) {
   console.log('Connected to redis successfully');
 });
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

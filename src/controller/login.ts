@@ -17,8 +17,8 @@ export const signin = async (req: Request, res: Response, next: NextFunction): P
             return res.status(404).send('auth failed');
         };
 
-        res.cookie('id', sessionID);
+        res.cookie('connect.sid', sessionID);
 
-        return res.send({session, status: 'logged-in'});
+        return res.send({ status: 'logged-in'});
 
 };
