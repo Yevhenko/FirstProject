@@ -1,8 +1,8 @@
 import { getUserByLogin } from '../services/user';
 import { NextFunction, Request, Response } from "express";
 
-export const signin = async (req: Request, res: Response, next: NextFunction): Promise<Response | Error> => {
-        const { body } = req;
+export const signin = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        const { body, sessionID, session } = req;
 
         const { login, password } = body;
 
@@ -15,7 +15,10 @@ export const signin = async (req: Request, res: Response, next: NextFunction): P
 
         if (user.password !== password) {
             return res.status(404).send('auth failed');
-        }
+        };
 
-        return res.json('authorization');
+        res.cookie('id', sessionID);
+
+        return res.send({session, status: 'logged-in'});
+
 };
