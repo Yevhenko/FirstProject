@@ -1,12 +1,8 @@
-import Redis from 'ioredis';
 import { getRepository } from 'typeorm';
+import { hash, compare } from 'bcrypt';
 import { User } from '../models/User';
-import { IUser } from '../constants';
-
-const redis = new Redis({
-  port: 6379,
-  host: 'redis',
-});
+import { IUser } from '../interface';
+import { env } from '../../../config';
 
 export const createUser = async (data: IUser): Promise<IUser> => {
   const user = getRepository(User).create(data);
@@ -22,7 +18,6 @@ export const getUserByLogin = async (login: string): Promise<IUser | null> => {
       login,
     },
   });
-
   if (!user) return null;
 
   return user;
@@ -31,17 +26,17 @@ export const getUserByLogin = async (login: string): Promise<IUser | null> => {
 export const getUsersFromDb = async (): Promise<IUser[]> => {
   const users = await getRepository(User).find();
 
-  return users;
+  return users.map((u) => ({ id: u.id, login: u.login }));
 };
 
-export const setDataToRedis = async (key: string, value: string) => {
-  const data = await redis.set(key, value);
-
-  return data;
+export const createHashedPassword = async (password: string): Promise<string> => {
+  return await hash(password, env.SALT);
 };
 
-export const getDataFromRedis = async (key: string) => {
-  const data = await redis.get(key);
-
-  return data;
+export const compareHashedPasswords = async (
+  password: string,
+  hashedPassword: string | undefined,
+): Promise<boolean | null> => {
+  if (!hashedPassword) return null;
+  return await compare(password, hashedPassword);
 };
