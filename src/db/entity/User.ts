@@ -5,7 +5,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ length: 100 })
+  @Column({ length: 101 })
   login!: string;
 
   @Column({ length: 100 })
