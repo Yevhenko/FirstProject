@@ -1,7 +1,7 @@
 import Redis from 'ioredis';
 import { getRepository } from 'typeorm';
-import { User } from '../db/entity/User';
-import { IUser } from '../views';
+import { User } from '../models/User';
+import { IUser } from '../constants';
 
 const redis = new Redis({
   port: 6379,

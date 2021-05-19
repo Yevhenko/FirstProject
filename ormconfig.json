@@ -8,13 +8,13 @@
   "synchronize": false,
   "logging": false,
   "entities": [
-   "dist/db/entity/*.js"
+   "dist/components/user/models/*.js"
   ],
   "migrations": [
    "dist/db/migration/*.js"
   ],
   "cli": {
-     "entitiesDir": "src/db/entity",
+     "entitiesDir": "src/components/user/models",
      "migrationsDir": "src/db/migration"
   }
 }

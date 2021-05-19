@@ -5,4 +5,5 @@ export const env = load({
   DB_PORT_EXT: Number,
   SECRET: String,
   REDIS_PORT: Number,
+  SECRET_FOR_PASSWORD: String,
 });

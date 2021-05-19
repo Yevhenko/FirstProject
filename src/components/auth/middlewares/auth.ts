@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { getDataFromRedis } from '../services/user';
+import { getDataFromRedis } from '../../user/service/user';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   const { cookies } = req;

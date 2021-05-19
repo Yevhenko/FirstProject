@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { getUserByLogin, setDataToRedis } from '../services/user';
+import { getUserByLogin, setDataToRedis } from '../../user/service/user';
 
-export const signin = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+export const signIn = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   const { body, sessionID, session } = req;
   const { login, password } = body;
 
