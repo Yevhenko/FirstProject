@@ -1,31 +1,31 @@
 import Redis from 'ioredis';
-// @ts-ignore
+import { getRepository } from 'typeorm';
+import { User } from '../db/entity/User';
+import { IUser } from '../views';
+
 const redis = new Redis({
   port: 6379,
   host: 'redis',
 });
-import {User} from "../db/entity/User";
-import {IUser} from "../views";
-import {getRepository} from "typeorm";
 
 export const createUser = async (data: IUser): Promise<IUser> => {
-        const user = getRepository(User).create(data);
+  const user = getRepository(User).create(data);
 
-        const result = await getRepository(User).save(user);
+  const result = await getRepository(User).save(user);
 
-        return result;
+  return result;
 };
 
 export const getUserByLogin = async (login: string): Promise<IUser | null> => {
-        const user = await getRepository(User).findOne({
-            where: {
-                login,
-            },
-        });
+  const user = await getRepository(User).findOne({
+    where: {
+      login,
+    },
+  });
 
-        if (!user) return null;
+  if (!user) return null;
 
-        return user;
+  return user;
 };
 
 export const getUsersFromDb = async (): Promise<IUser[]> => {
