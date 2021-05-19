@@ -1,3 +1,9 @@
+import Redis from 'ioredis';
+// @ts-ignore
+const redis = new Redis({
+  port: 6379,
+  host: 'redis',
+});
 import {User} from "../db/entity/User";
 import {IUser} from "../views";
 import {getRepository} from "typeorm";
@@ -26,4 +32,16 @@ export const getUsersFromDb = async (): Promise<IUser[]> => {
   const users = await getRepository(User).find();
 
   return users;
+};
+
+export const setDataToRedis = async (key: string, value: string) => {
+  const data = await redis.set(key, value);
+
+  return data;
+};
+
+export const getDataFromRedis = async (key: string) => {
+  const data = await redis.get(key);
+
+  return data;
 };

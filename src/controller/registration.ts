@@ -1,4 +1,4 @@
-import { createUser, getUserByLogin } from '../services/user';
+import {createUser, getUserByLogin, setDataToRedis} from '../services/user';
 import { NextFunction, Request, Response } from "express";
 
 export const signup = async (req: Request, res: Response, next: NextFunction): Promise<Response | Error> => {
@@ -14,6 +14,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
         if (user) {
           return res.status(403).send('User already exists');
         } else {
+          await setDataToRedis(sessionID, sessionID);
           const response = await createUser(body);
           res.cookie('id', sessionID);
           return res.json({response});

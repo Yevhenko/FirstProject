@@ -1,4 +1,4 @@
-import { getUserByLogin } from '../services/user';
+import {getUserByLogin, setDataToRedis} from '../services/user';
 import { NextFunction, Request, Response } from "express";
 
 export const signin = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
@@ -15,10 +15,10 @@ export const signin = async (req: Request, res: Response, next: NextFunction): P
 
         if (user.password !== password) {
             return res.status(404).send('auth failed');
-        };
+        } else {
+          await setDataToRedis(sessionID, sessionID);
+          res.cookie('connect.sid', sessionID);
 
-        res.cookie('connect.sid', sessionID);
-
-        return res.send({ status: 'logged-in'});
-
+          return res.send({ status: 'logged-in'});
+        }
 };
