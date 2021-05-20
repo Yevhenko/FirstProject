@@ -23,8 +23,8 @@ export const getUserByLogin = async (login: string): Promise<IUser | null> => {
   return user;
 };
 
-export const getUsersFromDb = async (): Promise<IUser[]> => {
-  const users = await getRepository(User).find();
+export const getUsersFromDb = async (skip: number, perPage: number): Promise<IUser[]> => {
+  const users = await getRepository(User).createQueryBuilder('user').skip(skip).take(perPage).getMany();
 
   return users.map((u) => ({ id: u.id, login: u.login }));
 };

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { createUser, getUserByLogin } from '../../user/service/user';
 import { setDataToRedis } from '../service/authService';
 import { createHashedPassword } from '../../user/service/user';
+import { constants } from '../../../constants';
 
 export const signUp = async (req: Request, res: Response, next: NextFunction): Promise<Response | Error> => {
   const { body, sessionID } = req;
@@ -19,7 +20,7 @@ export const signUp = async (req: Request, res: Response, next: NextFunction): P
   } else {
     await setDataToRedis(sessionID, sessionID);
     const response = await createUser({ login, password: hashedPass });
-    res.cookie('connect.sid', sessionID);
+    res.cookie(constants.COOKIES_KEY, sessionID);
     return res.json({ response });
   }
 };

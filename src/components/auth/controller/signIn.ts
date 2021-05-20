@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { getUserByLogin } from '../../user/service/user';
 import { setDataToRedis } from '../service/authService';
 import { compareHashedPasswords } from '../../user/service/user';
+import { constants } from '../../../constants';
 
 export const signIn = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   const { body, sessionID } = req;
@@ -20,7 +21,7 @@ export const signIn = async (req: Request, res: Response, next: NextFunction): P
     return res.status(404).send('auth failed');
   } else {
     await setDataToRedis(sessionID, sessionID);
-    res.cookie('connect.sid', sessionID);
+    res.cookie(constants.COOKIES_KEY, sessionID);
 
     return res.send({ status: 'logged-in' });
   }
