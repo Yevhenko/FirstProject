@@ -1,0 +1,20 @@
+{
+  "type": "postgres",
+  "host": "postgres",
+  "port": 5432,
+  "username": "admin",
+  "password": "admin",
+  "database": "admin",
+  "synchronize": false,
+  "logging": false,
+  "entities": [
+   "dist/components/user/models/*.js"
+  ],
+  "migrations": [
+   "dist/db/migration/*.js"
+  ],
+  "cli": {
+     "entitiesDir": "src/components/user/models",
+     "migrationsDir": "src/db/migration"
+  }
+}
