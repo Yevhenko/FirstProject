@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
-import { getDataFromRedis } from '../service/authService';
+import { checkTheKeyInRedis, getDataFromRedis } from '../service/authService';
 
-export const auth = async (req: Request, res: Response, next: NextFunction) => {
+export const auth = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   const { cookies } = req;
-  const key: any = Object.values(cookies)[0];
 
-  const data = await getDataFromRedis(key);
+  const value: any = Object.values(cookies)[0];
 
-  if (data === key) {
+  const data = await checkTheKeyInRedis(value);
+
+  if (data) {
     return next();
   }
   return res.status(404).send('login please');
