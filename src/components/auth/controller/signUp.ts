@@ -3,8 +3,9 @@ import { createUser, getUserByLogin, saveUserIdToSession } from '../../user/serv
 import { setDataToRedis } from '../service/authService';
 import { createHashedPassword } from '../../user/service/user';
 import { constants } from '../../../constants';
+import { ModifiedRequest } from '../../user/interface';
 
-export const signUp = async (req: Request, res: Response, next: NextFunction): Promise<Response | Error> => {
+export const signUp = async (req: ModifiedRequest, res: Response, next: NextFunction): Promise<Response | Error> => {
   const { body, sessionID, session } = req;
   const { login, password } = body;
 

@@ -1,9 +1,9 @@
-import 'express';
+import { Request } from 'express';
+import { constants } from '../../../constants';
 
-declare module 'express' {
-  interface Request {
-    user?: IUser;
-  }
+export interface ModifiedRequest extends Request {
+  cookies: { [constants.COOKIES_KEY]: string };
+  user?: IUser;
 }
 
 export interface IUser {

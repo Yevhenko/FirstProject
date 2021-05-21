@@ -17,9 +17,3 @@ export const getDataFromRedis = async (key: string) => {
 
   return data;
 };
-
-export const checkTheKeyInRedis = async (key: string) => {
-  const data = await redis.exists(key);
-
-  return data;
-};

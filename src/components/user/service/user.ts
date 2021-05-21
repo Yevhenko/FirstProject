@@ -30,7 +30,7 @@ export const getUsersFromDb = async (skip: number, perPage: number): Promise<IUs
   return users.map((u) => ({ id: u.id, login: u.login }));
 };
 
-export const getUserByIdFromDb = async (id: number): Promise<IUser | null> => {
+export const getUserByIdFromDb = async (id: number | undefined): Promise<IUser | null> => {
   const user = await getRepository(User).findOne({
     where: { id },
   });
