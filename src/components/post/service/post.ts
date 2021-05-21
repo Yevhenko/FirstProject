@@ -28,10 +28,10 @@ export const getAllPostsFromDb = async (skip: number, perPage: number): Promise<
   return posts.map((p) => ({ id: p.id, title: p.title }));
 };
 
-export const updatePostInDb = async (body: IPost, id: number): Promise<string> => {
+export const updatePostInDb = async (id: number, title?: string, text?: string): Promise<string> => {
   const post = await getRepository(Post).findOne({ where: { id } });
 
-  getRepository(Post).merge(post, body);
+  getRepository(Post).merge(post, { title, text });
   await getRepository(Post).save(post);
 
   return 'Post updated!';

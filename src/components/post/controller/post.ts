@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { createPostToDb, getAllPostsFromDb, getPostById } from '../service/post';
+import { createPostToDb, getAllPostsFromDb, getPostById, updatePostInDb } from '../service/post';
 import { IUser } from '../../user/interface';
 
 export const getAllPosts = async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
@@ -35,5 +35,8 @@ export const getOnePost = async (req: Request, res: Response, next: NextFunction
 };
 
 export const updatePost = async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
-  const;
+  const { body, params } = req;
+
+  const postId = Number(params);
+  const response = await updatePostInDb({ title, text });
 };
