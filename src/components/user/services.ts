@@ -1,8 +1,8 @@
 import { getRepository } from 'typeorm';
 import { hash, compare } from 'bcrypt';
-import { User } from '../models/User';
-import { IUser } from '../interface';
-import { env } from '../../../config';
+import { User } from './models/User';
+import { IUser } from './interfaces';
+import { env } from '../../config/config';
 import { Session, SessionData } from 'express-session';
 
 export const createUser = async (data: IUser): Promise<IUser> => {

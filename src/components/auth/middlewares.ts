@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { getDataFromRedis } from '../service/authService';
+import { getDataFromRedis } from './services';
 import { constants } from '../../../constants';
 import { getUserByIdFromDb } from '../../user/service/user';
 import { ModifiedRequest } from '../../user/interface';
