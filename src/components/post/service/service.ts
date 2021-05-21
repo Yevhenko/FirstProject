@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 
 import { Post } from '../models/Post';
-import { IPost } from '../interface';
+import { IPost } from '../interface/interfaces';
 import { env } from '../../../config';
 
 export const createPostToDb = async (data: IPost): Promise<IPost> => {
@@ -12,7 +12,7 @@ export const createPostToDb = async (data: IPost): Promise<IPost> => {
   return result;
 };
 
-export const getPostById = async (id: number): Promise<IPost> => {
+export const getPostById = async (id?: number): Promise<IPost> => {
   const post = await getRepository(Post).findOne({
     where: {
       id,
@@ -28,9 +28,10 @@ export const getAllPostsFromDb = async (skip: number, perPage: number): Promise<
   return posts.map((p) => ({ id: p.id, title: p.title }));
 };
 
-export const updatePostInDb = async (id: number, title?: string, text?: string): Promise<string> => {
+export const updatePostInDb = async (id: number, title?: string, text?: string): Promise<string | null> => {
   const post = await getRepository(Post).findOne({ where: { id } });
 
+  if (!title || !text) return null;
   getRepository(Post).merge(post, { title, text });
   await getRepository(Post).save(post);
 

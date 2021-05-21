@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { createPostToDb, getAllPostsFromDb, getPostById, updatePostInDb } from '../service/post';
+import { createPostToDb, getAllPostsFromDb, getPostById, updatePostInDb } from '../service/service';
 import { IUser } from '../../user/interface';
 
 export const getAllPosts = async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
