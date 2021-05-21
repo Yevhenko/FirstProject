@@ -6,7 +6,7 @@ import redis from 'redis';
 import connectRedis from 'connect-redis';
 import bodyParser from 'body-parser';
 import { createConnection } from 'typeorm';
-import { env } from './config/index';
+import { env } from './config/config';
 import { router } from './router';
 
 const app = express();

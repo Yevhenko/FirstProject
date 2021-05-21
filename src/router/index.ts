@@ -1,12 +1,8 @@
 import express from 'express';
-import { auth } from '../components/auth/middlewares/auth';
-import { logIn } from '../components/auth/router/logIn';
-import { registration } from '../components/auth/router/registration';
-import { user } from '../components/user/router/user';
+import { authRouter } from '../components/auth/index';
+import { userRouter } from '../components/user/index';
 
 export const router = express.Router();
 
-router.use(registration);
-router.use(logIn);
-router.use(auth);
-router.use(user);
+router.use(authRouter.auth);
+router.use(userRouter.user);
