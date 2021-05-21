@@ -1,4 +1,4 @@
-import * as authMiddlewares from './middlewares/middlewares';
-import * as authRouter from './router/index';
+import * as authMiddlewares from './middlewares';
+import * as authRouter from './router';
 
 export { authRouter, authMiddlewares };
