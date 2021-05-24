@@ -5,7 +5,7 @@ const redis = new Redis({
   host: 'redis',
 });
 
-export const setDataToRedis = async (key: string, value: string) => {
+export const setDataToRedis = async (key: string, value: any): Promise<any> => {
   const data = await redis.set(key, value);
 
   return data;
