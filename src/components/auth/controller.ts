@@ -1,33 +1,15 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { userService } from '../user';
 import { setDataToRedis } from './services';
 import { constants } from '../../constants/constatnts';
+import { userInterface } from '../user';
 
-export const signIn = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-  const { body, sessionID } = req;
-  const { login, password } = body;
-
-  if (!login || !password) {
-    return res.status(400).send('Bad request');
-  }
-  const user = await userService.getUserByLogin(login);
-
-  if (!user) return res.status(403).send('Login or password mismatch');
-
-  const passwordMatch = await userService.compareHashedPasswords(password, user.password);
-
-  if (!passwordMatch) {
-    return res.status(404).send('auth failed');
-  } else {
-    await setDataToRedis(sessionID, sessionID);
-    res.cookie(constants.COOKIES_KEY, sessionID);
-
-    return res.send({ status: 'logged-in' });
-  }
-};
-
-export const signUp = async (req: Request, res: Response, next: NextFunction): Promise<Response | Error> => {
-  const { body, sessionID } = req;
+export const signUp = async (
+  req: userInterface.ModifiedRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<Response | Error> => {
+  const { body, sessionID, session } = req;
   const { login, password } = body;
 
   const hashedPass = await userService.createHashedPassword(password);
@@ -37,12 +19,42 @@ export const signUp = async (req: Request, res: Response, next: NextFunction): P
   }
   const user = await userService.getUserByLogin(login);
 
+  await setDataToRedis(sessionID, JSON.stringify(session));
+
   if (user) {
+    await userService.saveUserIdToSession(session, user.id);
     return res.status(403).send('User already exists');
   } else {
-    await setDataToRedis(sessionID, sessionID);
     const response = await userService.createUser({ login, password: hashedPass });
+
     res.cookie(constants.COOKIES_KEY, sessionID);
     return res.json({ response });
+  }
+};
+
+export const signIn = async (
+  req: userInterface.ModifiedRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<Response | void> => {
+  const { body, sessionID, session } = req;
+  const { login, password } = body;
+
+  if (!login || !password) {
+    return res.status(400).send('Bad request');
+  }
+  const user = await userService.getUserByLogin(login);
+
+  if (!user) return res.status(403).send('Login or password mismatch');
+  const passwordMatch = await userService.compareHashedPasswords(password, user.password);
+
+  if (!passwordMatch) {
+    return res.status(404).send('auth failed');
+  } else {
+    await userService.saveUserIdToSession(session, user.id);
+    await setDataToRedis(sessionID, JSON.stringify(session));
+    res.cookie(constants.COOKIES_KEY, sessionID);
+
+    return res.send({ status: 'logged-in' });
   }
 };

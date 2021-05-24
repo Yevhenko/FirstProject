@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { constants } from '../../../constants';
+import { constants } from '../../constants/constatnts';
 
 export interface ModifiedRequest extends Request {
   cookies: { [constants.COOKIES_KEY]: string };

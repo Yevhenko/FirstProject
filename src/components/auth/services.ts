@@ -1,5 +1,4 @@
 import Redis from 'ioredis';
-import { Session } from 'express-session';
 
 const redis = new Redis({
   port: 6379,

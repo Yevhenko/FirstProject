@@ -1,8 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
-import { ModifiedRequest } from '../interface';
+import { userInterface } from './index';
 import { getUsersFromDb } from './services';
 
-export const getAllUsers = async (req: ModifiedRequest, res: Response, next: NextFunction): Promise<Response> => {
+export const getAllUsers = async (
+  req: userInterface.ModifiedRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<Response> => {
   const {
     query: { offset, limit },
   } = req;
