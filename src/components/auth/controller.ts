@@ -50,7 +50,7 @@ export const signIn = async (
   if (!passwordMatch) {
     return res.status(404).send('auth failed');
   } else {
-    await userService.saveUserIdToSession(session, user.id);
+    session.userId = user.id;
     await setDataToRedis(sessionID, JSON.stringify(session));
     res.cookie(constants.COOKIES_KEY, sessionID);
 

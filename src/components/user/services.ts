@@ -1,4 +1,3 @@
-import { Session, SessionData } from 'express-session';
 import { getRepository } from 'typeorm';
 import { hash, compare } from 'bcrypt';
 import { User } from './models/User';
@@ -49,11 +48,4 @@ export const compareHashedPasswords = async (
 ): Promise<boolean | null> => {
   if (!hashedPassword) return null;
   return await compare(password, hashedPassword);
-};
-
-export const saveUserIdToSession = async (
-  session: Session & Partial<SessionData>,
-  userId: number | undefined,
-): Promise<void> => {
-  session.userId = userId;
 };

@@ -5,17 +5,15 @@ import { IPost } from './interfaces';
 export const createPostInDb = async (data: IPost): Promise<IPost | null> => {
   const post = getRepository(Post).create(data);
 
-  console.log(post);
-
   return await getRepository(Post).save(post);
 };
 
 export const getPostById = async (id: number): Promise<Post> => {
-  const post = await getRepository(Post).findOne({
-    where: {
-      id,
-    },
-  });
+  const post = getRepository(Post)
+    .createQueryBuilder('post')
+    .where('post.id = :id', { id })
+    .select(['post.id', 'post.title', 'post.textInPost', 'post.createdAt', 'post.updatedAt'])
+    .execute();
 
   if (!post) throw new Error('post not found');
 

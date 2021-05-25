@@ -72,8 +72,6 @@ export const updatePost = async (
   const data = await getUserIdOfThePost(postId);
   const userId = data.find((e: { userId: number }) => e.userId).userId;
 
-  console.log(userId);
-
   if (userId !== req.user?.id) return res.status(403).send('forbidden');
   const response = await updatePostInDb(postId, title, textInPost);
 
