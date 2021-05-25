@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { userInterface } from './index';
 import { getUsersFromDb } from './services';
 
@@ -10,6 +10,8 @@ export const getAllUsers = async (
   const {
     query: { offset, limit },
   } = req;
+
+  console.log(req);
 
   const skip = Number(offset);
   const perPage = Number(limit);

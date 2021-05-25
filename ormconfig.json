@@ -7,14 +7,10 @@
   "database": "admin",
   "synchronize": false,
   "logging": false,
-  "entities": [
-   "dist/components/user/models/*.js"
-  ],
-  "migrations": [
-   "dist/db/migration/*.js"
-  ],
+  "entities": ["dist/components/user/models/*.js", "dist/components/post/models/*.js"],
+  "migrations": ["dist/db/migration/*.js"],
   "cli": {
-     "entitiesDir": "src/components/user/models",
-     "migrationsDir": "src/db/migration"
+    "entitiesDir": "src/components/user/models",
+    "migrationsDir": "src/db/migration"
   }
 }

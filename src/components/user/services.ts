@@ -30,11 +30,11 @@ export const getUsersFromDb = async (skip: number, perPage: number): Promise<IUs
   return users.map((u) => ({ id: u.id, login: u.login }));
 };
 
-export const getUserByIdFromDb = async (id: number | undefined): Promise<IUser | null> => {
+export const getUserByIdFromDb = async (id: number | undefined): Promise<User> => {
   const user = await getRepository(User).findOne({
     where: { id },
   });
-  if (!user) return null;
+  if (!user) throw new Error('no user');
 
   return user;
 };

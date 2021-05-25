@@ -1,9 +1,10 @@
 import { Request } from 'express';
 import { constants } from '../../constants/constatnts';
+import { User } from './models/User';
 
 export interface ModifiedRequest extends Request {
   cookies: { [constants.COOKIES_KEY]: string };
-  user?: IUser;
+  user?: User;
 }
 
 export interface IUser {
