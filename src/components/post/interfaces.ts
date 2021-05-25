@@ -1,4 +1,3 @@
-import { IUser } from '../user/interfaces';
 import { User } from '../user/models/User';
 
 export interface IPost {

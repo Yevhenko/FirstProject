@@ -1,4 +1,4 @@
-import { createQueryBuilder, getRepository, SelectQueryBuilder } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { Post } from './models/Post';
 import { IPost } from './interfaces';
 
