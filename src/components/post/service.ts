@@ -12,7 +12,7 @@ export const getPostById = async (id: number): Promise<Post> => {
   const post = getRepository(Post)
     .createQueryBuilder('post')
     .where('post.id = :id', { id })
-    .select(['post.id', 'post.title', 'post.textInPost', 'post.createdAt', 'post.updatedAt'])
+    .select(['post.id', 'post.title', 'post.textInPost', 'post.userId', 'post.createdAt', 'post.updatedAt'])
     .execute();
 
   if (!post) throw new Error('post not found');

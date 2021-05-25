@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc --build",
-    "start:dev": "node dist/index.js",
+    "start": "nodemon src/index.ts",
     "local:dev:typeorm": "npm run typeorm:dev",
     "typeorm:dev": "ts-node ./node_modules/.bin/typeorm --config ormconfig.json",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm",
