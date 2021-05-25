@@ -4,7 +4,7 @@ import {
   deletePostFromDb,
   getAllPostsFromDb,
   getPostById,
-  permissionToEditPost,
+  getUserIdOfThePost,
   updatePostInDb,
 } from './service';
 import { userInterface } from '../user';
@@ -36,8 +36,6 @@ export const createPost = async (
     body: { title, textInPost },
     user,
   } = req;
-
-  const userId = user?.id;
 
   if (!title || !textInPost) return res.status(404).send('data not found');
 
@@ -71,9 +69,12 @@ export const updatePost = async (
   } = req;
 
   const postId = Number(params.id);
-  const user = await getPostById(postId);
+  const data = await getUserIdOfThePost(postId);
+  const userId = data.find((e: { userId: number }) => e.userId).userId;
 
-  if (user.user.id !== req.user?.id) return res.status(403).send('forbidden');
+  console.log(userId);
+
+  if (userId !== req.user?.id) return res.status(403).send('forbidden');
   const response = await updatePostInDb(postId, title, textInPost);
 
   return res.json(response);
@@ -87,9 +88,10 @@ export const deletePost = async (
   const { params } = req;
 
   const postId = Number(params.id);
-  const user = await getPostById(postId);
+  const data = await getUserIdOfThePost(postId);
+  const userId = data.find((e: { userId: number }) => e.userId).userId;
 
-  if (user.user.id !== req.user?.id) return res.status(403).send('forbidden');
+  if (userId !== req.user?.id) return res.status(403).send('forbidden');
   const response = await deletePostFromDb(postId);
 
   return res.send(response);

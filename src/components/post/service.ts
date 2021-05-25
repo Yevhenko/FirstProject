@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { createQueryBuilder, getRepository, SelectQueryBuilder } from 'typeorm';
 import { Post } from './models/Post';
 import { IPost } from './interfaces';
 
@@ -46,20 +46,17 @@ export const deletePostFromDb = async (id: number): Promise<string> => {
   return 'Post has been deleted';
 };
 
-export const permissionToEditPost = async (postId: number, userId: number | undefined): Promise<boolean | null> => {
-  const post = await getPostById(postId);
-  if (post.user.id !== userId) return false;
-  return true;
-};
+export const getUserIdOfThePost = async (
+  id: number,
+): Promise<{ userId: number; find(param: (e: { userId: number }) => number): any }> => {
+  const userId = getRepository(Post)
+    .createQueryBuilder('post')
+    .leftJoinAndSelect('post.user', 'user')
+    .where('post.id = :id', { id })
+    .select(['post.userId'])
+    .execute();
 
-export const getPostByUserId = async (id: number): Promise<Post> => {
-  const post = await getRepository(Post).findOne({
-    where: {
-      id,
-    },
-  });
+  if (!userId) throw new Error('post not found');
 
-  if (!post) throw new Error('post not found');
-
-  return post;
+  return userId;
 };

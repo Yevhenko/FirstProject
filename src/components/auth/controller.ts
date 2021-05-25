@@ -17,15 +17,14 @@ export const signUp = async (
   if (!login || !password) {
     return res.status(400).send('Bad request');
   }
-  const user = await userService.getUserByLogin(login);
+  const existingUser = await userService.getUserByLogin(login);
 
-  await setDataToRedis(sessionID, JSON.stringify(session));
-
-  if (user) {
-    await userService.saveUserIdToSession(session, user.id);
+  if (existingUser) {
     return res.status(403).send('User already exists');
   } else {
     const response = await userService.createUser({ login, password: hashedPass });
+    session.userId = response.id;
+    await setDataToRedis(sessionID, JSON.stringify(session));
 
     res.cookie(constants.COOKIES_KEY, sessionID);
     return res.json({ response });
