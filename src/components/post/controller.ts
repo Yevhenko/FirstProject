@@ -33,16 +33,16 @@ export const createPost = async (
   next: NextFunction,
 ): Promise<Response> => {
   const {
-    body: { title, textInPost },
+    body: { title, text },
     user,
   } = req;
 
-  if (!title || !textInPost) return res.status(404).send('data not found');
+  if (!title || !text) return res.status(404).send('data not found');
 
   if (!user) return res.status(404).send('no data');
-  const response = await createPostInDb({ title, textInPost, user });
+  const post = await createPostInDb({ title, text, user });
 
-  return res.json(response);
+  return res.json({ id: post?.id, title: post?.title, text: post?.text, userId: post?.user.id });
 };
 
 export const getOnePost = async (
@@ -53,9 +53,9 @@ export const getOnePost = async (
   const { params } = req;
   const postId = Number(params.id);
 
-  const response = await getPostById(postId);
+  const post = await getPostById(postId);
 
-  return res.json(response);
+  return res.json(post);
 };
 
 export const updatePost = async (
@@ -64,7 +64,7 @@ export const updatePost = async (
   next: NextFunction,
 ): Promise<Response> => {
   const {
-    body: { title, textInPost },
+    body: { title, text },
     params,
   } = req;
 
@@ -72,7 +72,7 @@ export const updatePost = async (
   const userId = await getUserIdOfThePost(postId);
 
   if (userId !== req.user?.id) return res.status(403).send('forbidden');
-  const response = await updatePostInDb(postId, title, textInPost);
+  const response = await updatePostInDb(postId, title, text);
 
   return res.json(response);
 };

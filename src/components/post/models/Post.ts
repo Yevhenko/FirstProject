@@ -18,7 +18,7 @@ export class Post {
   title!: string;
 
   @Column({ length: 100 })
-  textInPost!: string;
+  text!: string;
 
   @CreateDateColumn()
   createdAt!: Date;

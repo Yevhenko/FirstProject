@@ -23,17 +23,17 @@ export const getPostById = async (id: number): Promise<Post> => {
 export const getAllPostsFromDb = async (
   skip: number,
   perPage: number,
-): Promise<{ id: number; textInPost: string; title: string }[]> => {
+): Promise<{ id: number; text: string; title: string }[]> => {
   const posts = await getRepository(Post).createQueryBuilder('post').skip(skip).take(perPage).getMany();
 
-  return posts.map((p) => ({ id: p.id, title: p.title, textInPost: p.textInPost }));
+  return posts.map((p) => ({ id: p.id, title: p.title, text: p.text }));
 };
 
-export const updatePostInDb = async (id: number, title?: string, textInPost?: string): Promise<string | null> => {
+export const updatePostInDb = async (id: number, title?: string, text?: string): Promise<string | null> => {
   const post = await getRepository(Post).findOne({ where: { id } });
 
   if (!post) return null;
-  getRepository(Post).merge(post, { title, textInPost });
+  getRepository(Post).merge(post, { title, text });
   await getRepository(Post).save(post);
 
   return 'Post updated!';
