@@ -44,17 +44,15 @@ export const deletePostFromDb = async (id: number): Promise<string> => {
   return 'Post has been deleted';
 };
 
-export const getUserIdOfThePost = async (
-  id: number,
-): Promise<{ userId: number; find(param: (e: { userId: number }) => number): any }> => {
-  const userId = getRepository(Post)
+export const getUserIdOfThePost = async (postId: number): Promise<Error | number> => {
+  const userId = await getRepository(Post)
     .createQueryBuilder('post')
     .leftJoinAndSelect('post.user', 'user')
-    .where('post.id = :id', { id })
-    .select(['post.userId'])
+    .where('post.id = :id', { id: postId })
+    .select('post.userId')
     .execute();
 
-  if (!userId) throw new Error('post not found');
+  if (userId.length === 0) throw new Error('post not found');
 
-  return userId;
+  return userId[0].userId;
 };

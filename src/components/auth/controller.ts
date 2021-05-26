@@ -1,14 +1,14 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, response, Response } from 'express';
 import { userService } from '../user';
+import { userInterface } from '../user';
 import { setDataToRedis } from './services';
 import { constants } from '../../constants/constatnts';
-import { userInterface } from '../user';
 
 export const signUp = async (
   req: userInterface.ModifiedRequest,
   res: Response,
   next: NextFunction,
-): Promise<Response | Error> => {
+): Promise<Response> => {
   const { body, sessionID, session } = req;
   const { login, password } = body;
 
@@ -22,12 +22,13 @@ export const signUp = async (
   if (existingUser) {
     return res.status(403).send('User already exists');
   } else {
-    const response = await userService.createUser({ login, password: hashedPass });
-    session.userId = response.id;
+    const user = await userService.createUser({ login, password: hashedPass });
+    session.userId = user.id;
     await setDataToRedis(sessionID, JSON.stringify(session));
 
     res.cookie(constants.COOKIES_KEY, sessionID);
-    return res.json({ response });
+
+    return res.json({ id: user.id, login: user.login });
   }
 };
 

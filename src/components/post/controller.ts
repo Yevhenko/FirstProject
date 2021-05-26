@@ -69,10 +69,9 @@ export const updatePost = async (
   } = req;
 
   const postId = Number(params.id);
-  const data = await getUserIdOfThePost(postId);
-  const userId = data.find((e: { userId: number }) => e.userId).userId;
+  const userId = await getUserIdOfThePost(postId);
 
-  if (userId !== req.user?.id) return res.status(403).send('forbidden');
+  if (userId === req.user?.id) return res.status(403).send('forbidden');
   const response = await updatePostInDb(postId, title, textInPost);
 
   return res.json(response);
@@ -86,8 +85,7 @@ export const deletePost = async (
   const { params } = req;
 
   const postId = Number(params.id);
-  const data = await getUserIdOfThePost(postId);
-  const userId = data.find((e: { userId: number }) => e.userId).userId;
+  const userId = await getUserIdOfThePost(postId);
 
   if (userId !== req.user?.id) return res.status(403).send('forbidden');
   const response = await deletePostFromDb(postId);

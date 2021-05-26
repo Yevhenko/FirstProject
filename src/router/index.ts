@@ -7,6 +7,6 @@ import { postRouter } from '../components/post';
 export const router = express.Router();
 
 router.use(authRouter.auth);
-router.use(auth);
+// router.use(auth);
 router.use(userRouter.user);
 router.use(postRouter.post);
