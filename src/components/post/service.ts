@@ -52,7 +52,7 @@ export const getUserIdOfThePost = async (postId: number): Promise<Error | number
     .select('post.userId')
     .execute();
 
-  if (userId.length === 0) throw new Error('post not found');
+  if (userId.length === 0) throw new Error('userId not found');
 
   return userId[0].userId;
 };
