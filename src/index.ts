@@ -9,6 +9,12 @@ import { createConnection } from 'typeorm';
 import { env } from './config/config';
 import { router } from './router';
 
+declare module 'express-session' {
+  interface SessionData {
+    userId: number;
+  }
+}
+
 const app = express();
 const port = env.APP_PORT;
 

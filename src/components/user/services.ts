@@ -1,4 +1,3 @@
-import { Session, SessionData } from 'express-session';
 import { getRepository } from 'typeorm';
 import { hash, compare } from 'bcrypt';
 import { User } from './models/User';
@@ -30,11 +29,11 @@ export const getUsersFromDb = async (skip: number, perPage: number): Promise<IUs
   return users.map((u) => ({ id: u.id, login: u.login }));
 };
 
-export const getUserByIdFromDb = async (id: number | undefined): Promise<IUser | null> => {
+export const getUserByIdFromDb = async (id: number | undefined): Promise<User> => {
   const user = await getRepository(User).findOne({
     where: { id },
   });
-  if (!user) return null;
+  if (!user) throw new Error('no user');
 
   return user;
 };
@@ -49,11 +48,4 @@ export const compareHashedPasswords = async (
 ): Promise<boolean | null> => {
   if (!hashedPassword) return null;
   return await compare(password, hashedPassword);
-};
-
-export const saveUserIdToSession = async (
-  session: Session & Partial<SessionData>,
-  userId: number | undefined,
-): Promise<void> => {
-  session.userId = userId;
 };

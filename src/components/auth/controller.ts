@@ -1,14 +1,14 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, response, Response } from 'express';
 import { userService } from '../user';
+import { userInterface } from '../user';
 import { setDataToRedis } from './services';
 import { constants } from '../../constants/constatnts';
-import { userInterface } from '../user';
 
 export const signUp = async (
   req: userInterface.ModifiedRequest,
   res: Response,
   next: NextFunction,
-): Promise<Response | Error> => {
+): Promise<Response> => {
   const { body, sessionID, session } = req;
   const { login, password } = body;
 
@@ -17,18 +17,18 @@ export const signUp = async (
   if (!login || !password) {
     return res.status(400).send('Bad request');
   }
-  const user = await userService.getUserByLogin(login);
+  const existingUser = await userService.getUserByLogin(login);
 
-  await setDataToRedis(sessionID, JSON.stringify(session));
-
-  if (user) {
-    await userService.saveUserIdToSession(session, user.id);
+  if (existingUser) {
     return res.status(403).send('User already exists');
   } else {
-    const response = await userService.createUser({ login, password: hashedPass });
+    const user = await userService.createUser({ login, password: hashedPass });
+    session.userId = user.id;
+    await setDataToRedis(sessionID, JSON.stringify(session));
 
     res.cookie(constants.COOKIES_KEY, sessionID);
-    return res.json({ response });
+
+    return res.json({ id: user.id, login: user.login });
   }
 };
 
@@ -51,7 +51,7 @@ export const signIn = async (
   if (!passwordMatch) {
     return res.status(404).send('auth failed');
   } else {
-    await userService.saveUserIdToSession(session, user.id);
+    session.userId = user.id;
     await setDataToRedis(sessionID, JSON.stringify(session));
     res.cookie(constants.COOKIES_KEY, sessionID);
 
