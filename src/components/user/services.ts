@@ -5,32 +5,25 @@ import { IUser } from './interfaces';
 import { env } from '../../config/config';
 
 export const createUser = async (data: IUser): Promise<IUser> => {
-  const user = getRepository(User).create(data);
+  const userRepo = getRepository(User);
+  const user = await userRepo.create(data);
 
-  const result = await getRepository(User).save(user);
-
-  return result;
+  return await userRepo.save(user);
 };
 
-export const getUserByLogin = async (login: string): Promise<IUser | null> => {
-  const user = await getRepository(User).findOne({
-    where: {
-      login,
-    },
-  });
-  if (!user) return null;
+export const getUserByLogin = async (login: string): Promise<IUser | undefined> =>
+  await getRepository(User).findOne({ where: { login } });
 
-  return user;
-};
+export const getUsersFromDb = async (offset: number, limit: number): Promise<IUser[]> => {
+  const userRepo = getRepository(User);
+  const users = await userRepo.createQueryBuilder('user').skip(offset).take(limit).getMany();
 
-export const getUsersFromDb = async (skip: number, perPage: number): Promise<IUser[]> => {
-  const users = await getRepository(User).createQueryBuilder('user').skip(skip).take(perPage).getMany();
-
-  return users.map((u) => ({ id: u.id, login: u.login }));
+  return users;
 };
 
 export const getUserByIdFromDb = async (id: number | undefined): Promise<User> => {
-  const user = await getRepository(User).findOne({
+  const userRepo = getRepository(User);
+  const user = await userRepo.findOne({
     where: { id },
   });
   if (!user) throw new Error('no user');
@@ -38,14 +31,7 @@ export const getUserByIdFromDb = async (id: number | undefined): Promise<User> =
   return user;
 };
 
-export const createHashedPassword = async (password: string): Promise<string> => {
-  return await hash(password, env.SALT);
-};
+export const createHashedPassword = async (password: string): Promise<string> => await hash(password, env.SALT);
 
-export const compareHashedPasswords = async (
-  password: string,
-  hashedPassword: string | undefined,
-): Promise<boolean | null> => {
-  if (!hashedPassword) return null;
-  return await compare(password, hashedPassword);
-};
+export const compareHashedPasswords = async (password: string, hashedPassword: string): Promise<boolean> =>
+  await compare(password, hashedPassword);
