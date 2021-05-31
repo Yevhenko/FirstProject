@@ -2,11 +2,10 @@ import 'reflect-metadata';
 import express from 'express';
 import session from 'express-session';
 import cookieParser = require('cookie-parser');
-import redis from 'redis';
 import connectRedis from 'connect-redis';
 import bodyParser from 'body-parser';
 import { createConnection } from 'typeorm';
-import { env } from './config/config';
+import { env, redisClient } from './config/config';
 import { router } from './router';
 
 declare module 'express-session' {
@@ -19,10 +18,6 @@ const app = express();
 const port = env.APP_PORT;
 
 const RedisStore = connectRedis(session);
-const redisClient = redis.createClient({
-  host: 'redis',
-  port: env.REDIS_PORT,
-});
 redisClient.on('error', function (err: Error) {
   console.log('Could not establish a connection with redis. ' + err);
 });

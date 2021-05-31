@@ -1,14 +1,10 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { getDataFromRedis } from './services';
 import { constants } from '../../constants/constatnts';
-import { userService } from '../user';
-import { userInterface } from '../user';
+import { userService } from '@components/user';
+import { ModifiedRequest } from '../../constants/interface';
 
-export const auth = async (
-  req: userInterface.ModifiedRequest,
-  res: Response,
-  next: NextFunction,
-): Promise<Response | void> => {
+export const auth = async (req: ModifiedRequest, res: Response, next: NextFunction): Promise<Response | void> => {
   const { cookies } = req;
 
   const sessionId = cookies[constants.COOKIES_KEY];
@@ -25,5 +21,5 @@ export const auth = async (
     req.user = user;
     return next();
   }
-  return res.status(401).send('login please');
+  return res.status(401).send('invalid sign-in');
 };

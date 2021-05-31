@@ -1,4 +1,9 @@
 {
+  "extends": "ts-node/node14/tsconfig.json",
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
+  "include": ["."],
   "compilerOptions": {
     "lib": [
       "es5",
@@ -12,6 +17,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"]
+    }
   }
 }

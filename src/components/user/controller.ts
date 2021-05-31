@@ -1,22 +1,13 @@
-import { NextFunction, Response } from 'express';
-import { userInterface } from './index';
+import { Response } from 'express';
+import { ModifiedRequest } from '../../constants/interface';
 import { getUsersFromDb } from './services';
 
-export const getAllUsers = async (
-  req: userInterface.ModifiedRequest,
-  res: Response,
-  next: NextFunction,
-): Promise<Response> => {
+export const getAllUsers = async (req: ModifiedRequest, res: Response): Promise<Response> => {
   const {
     query: { offset, limit },
   } = req;
 
-  console.log(req);
+  const users = await getUsersFromDb(Number(offset ?? 0), Number(limit ?? 10));
 
-  const skip = Number(offset);
-  const perPage = Number(limit);
-
-  const response = await getUsersFromDb(skip, perPage);
-
-  return res.json(response);
+  return res.json(users.map((u) => ({ id: u.id, login: u.login })));
 };
