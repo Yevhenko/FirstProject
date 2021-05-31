@@ -10,7 +10,7 @@
     "docker:down": "docker-compose down",
     "local:dev:typeorm": "npm run typeorm:dev",
     "typeorm:dev": "ts-node ./node_modules/.bin/typeorm --config ormconfig.ts",
-    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm",
+    "typeorm": "ts-node ./node_modules/.bin/typeorm",
     "migration:generate": "npm run typeorm -- migration:generate --config src/config/ormconfig.ts --connection  --name ",
     "migration:run": "npm run typeorm -- migration:run"
   },
