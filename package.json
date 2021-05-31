@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/index.ts",
+    "docker:up": "sudo docker-compose -f docker-compose.yml up --build",
+    "docker:down": "docker-compose -f docker-compose.yml down",
     "local:dev:typeorm": "npm run typeorm:dev",
     "typeorm:dev": "ts-node ./node_modules/.bin/typeorm --config ormconfig.ts",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm",

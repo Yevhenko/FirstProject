@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { userService } from '../user';
+import { userService } from '@components/user';
 import { ModifiedRequest } from '../../constants/interface';
 import { setDataToRedis } from './services';
 import { constants } from '../../constants/constatnts';

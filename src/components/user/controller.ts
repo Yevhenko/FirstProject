@@ -1,7 +1,6 @@
 import { Response } from 'express';
 import { ModifiedRequest } from '../../constants/interface';
 import { getUsersFromDb } from './services';
-import * as service from '../post/service';
 
 export const getAllUsers = async (req: ModifiedRequest, res: Response): Promise<Response> => {
   const {

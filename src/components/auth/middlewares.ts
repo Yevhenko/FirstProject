@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { getDataFromRedis } from './services';
 import { constants } from '../../constants/constatnts';
-import { userService } from '../user';
+import { userService } from '@components/user';
 import { ModifiedRequest } from '../../constants/interface';
 
 export const auth = async (req: ModifiedRequest, res: Response, next: NextFunction): Promise<Response | void> => {
