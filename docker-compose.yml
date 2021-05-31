@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     ports:
-      - ${APP_PORT}:${APP_PORT}
+      - 3000:3000
     volumes:
       - ./src:/usr/src/app/src
     depends_on:
@@ -24,11 +24,11 @@ services:
     container_name: postgres
     image: "postgres:9.6.1"
     ports:
-      - ${DB_PORT_EXT}:${DB_PORT}
+      - 54321:5432
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PSWD}
-      POSTGRES_DB: ${DB_BASE}
+      POSTGRES_USER: 'admin'
+      POSTGRES_PASSWORD: 'admin'
+      POSTGRES_DB: 'admin'
     volumes:
       - ./data_volumes/postgres:/var/lib/postgresql/data
     #networks:
