@@ -1,4 +1,7 @@
 {
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
   "include": ["."],
   "compilerOptions": {
     "lib": [
@@ -16,7 +19,7 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/components/*"],
+      "@components/*": ["src/components/*"]
     }
   }
 }
