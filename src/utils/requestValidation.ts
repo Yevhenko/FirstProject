@@ -1,15 +1,33 @@
 import { NextFunction, Response } from 'express';
-import * as zod from 'zod';
 import { ModifiedRequest } from '../constants/interface';
-import { userSchema, postSchema } from './schemas';
+import { paramsSchema, postBodySchema, querySchema, userBodySchema } from './schemas';
 
-export const validateRequest =
-  (schema: typeof userSchema | typeof postSchema) =>
+export const validateBody =
+  (schema: typeof userBodySchema | typeof postBodySchema) =>
   async (req: ModifiedRequest, res: Response, next: NextFunction): Promise<Response | void> => {
-    const data = schema.parse(req.body);
-    if (!data) {
-      res.send('Validation Error');
-      throw new zod.ZodError([]);
+    const data = await schema.safeParseAsync(req.body);
+    if (!data.success) {
+      return res.status(400).send(data.error);
+    }
+    return next();
+  };
+
+export const validateParams =
+  (schema: typeof paramsSchema) =>
+  async (req: ModifiedRequest, res: Response, next: NextFunction): Promise<Response | void> => {
+    const data = await schema.safeParseAsync(req.params);
+    if (!data.success) {
+      return res.status(400).send(data.error);
+    }
+    return next();
+  };
+
+export const validateQuery =
+  (schema: typeof querySchema) =>
+  async (req: ModifiedRequest, res: Response, next: NextFunction): Promise<Response | void> => {
+    const data = await schema.safeParseAsync(req.query);
+    if (!data.success) {
+      return res.status(400).send(data.error);
     }
     return next();
   };
