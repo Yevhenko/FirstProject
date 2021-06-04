@@ -1,8 +1,8 @@
 import { getRepository } from 'typeorm';
 import { hash, compare } from 'bcrypt';
+import { env } from '@config/config';
 import { User } from './models/User';
 import { IUser } from './interfaces';
-import { env } from '../../config/config';
 
 export const createUser = async (data: IUser): Promise<IUser> => {
   const userRepo = getRepository(User);

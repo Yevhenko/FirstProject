@@ -1,7 +1,7 @@
 import { Request } from 'express';
+import { ZodObject } from 'zod';
+import { User } from '@components/user';
 import { constants } from './constatnts';
-import { ZodObject, ZodType } from 'zod';
-import { User } from '../components/user/models/User';
 
 export interface ModifiedRequest extends Request {
   cookies: { [constants.COOKIES_KEY]: string };

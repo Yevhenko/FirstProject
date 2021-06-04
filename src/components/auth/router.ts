@@ -1,9 +1,9 @@
 import express from 'express';
+import { validateRequest } from '@utils/requestValidation';
+import { userSchemas } from '@components/user';
 import { signIn, signUp } from './controller';
-import { validateRequest } from '../../utils/requestValidation';
-import { createUserSchema } from '../../utils/schemas';
 
 export const auth = express.Router();
 
-auth.post('/auth/sign-in', validateRequest(createUserSchema), signIn);
-auth.post('/auth/sign-up', validateRequest(createUserSchema), signUp);
+auth.post('/auth/sign-in', validateRequest(userSchemas.createUserSchema), signIn);
+auth.post('/auth/sign-up', validateRequest(userSchemas.createUserSchema), signUp);

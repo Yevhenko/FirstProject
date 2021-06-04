@@ -1,8 +1,8 @@
-import { NextFunction, Response } from 'express';
-import { getDataFromRedis } from './services';
-import { constants } from '../../constants/constatnts';
+import { NextFunction, Request, Response } from 'express';
+import { constants } from '@constants/constatnts';
 import { userService } from '@components/user';
-import { ModifiedRequest } from '../../constants/interface';
+import { ModifiedRequest } from '@constants/interfaces';
+import { getDataFromRedis } from './services';
 
 export const auth = async (req: ModifiedRequest, res: Response, next: NextFunction): Promise<Response | void> => {
   const { cookies } = req;

@@ -1,6 +1,6 @@
 import { Response } from 'express';
+import { ModifiedRequest } from '@constants/interfaces';
 import * as service from './service';
-import { ModifiedRequest } from '../../constants/interface';
 
 export const getAllPosts = async (req: ModifiedRequest, res: Response): Promise<Response> => {
   const {
@@ -18,10 +18,9 @@ export const createPost = async (req: ModifiedRequest, res: Response): Promise<R
     user,
   } = req;
 
-  if (!user) return res.status(400).send('bad request');
   const post = await service.createPostInDb({ title, text, user });
 
-  return res.json({ id: post?.id, title: post?.title, text: post?.text, userId: post?.user.id });
+  return res.json({ id: post?.id, title: post?.title, text: post?.text, userId: post?.user?.id });
 };
 
 export const getOnePost = async (req: ModifiedRequest, res: Response): Promise<Response> => {

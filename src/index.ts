@@ -5,7 +5,7 @@ import cookieParser = require('cookie-parser');
 import connectRedis from 'connect-redis';
 import bodyParser from 'body-parser';
 import { createConnection } from 'typeorm';
-import { env, redisClient } from './config/config';
+import { env, redisClient } from '@config/config';
 import { router } from './router';
 
 declare module 'express-session' {

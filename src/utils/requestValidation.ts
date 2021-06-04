@@ -1,5 +1,5 @@
 import { NextFunction, Response } from 'express';
-import { ModifiedRequest, RequestSchema } from '../constants/interface';
+import { ModifiedRequest, RequestSchema } from '@constants/interfaces';
 
 export const validateRequest =
   (schema: RequestSchema) =>
