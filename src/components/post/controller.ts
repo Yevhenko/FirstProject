@@ -7,7 +7,7 @@ export const getAllPosts = async (req: ModifiedRequest, res: Response): Promise<
     query: { offset, limit },
   } = req;
 
-  const posts = await service.getAllPostsFromDb(Number(offset ?? 0), Number(limit ?? 10));
+  const posts = await service.getAllPostsFromDb(Number(offset), Number(limit));
 
   return res.json(posts.map((p) => ({ id: p.id, title: p.title, text: p.text })));
 };
@@ -17,8 +17,6 @@ export const createPost = async (req: ModifiedRequest, res: Response): Promise<R
     body: { title, text },
     user,
   } = req;
-
-  if (!title || !text) return res.status(400).send('bad request');
 
   if (!user) return res.status(400).send('bad request');
   const post = await service.createPostInDb({ title, text, user });

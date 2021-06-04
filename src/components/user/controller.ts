@@ -7,7 +7,7 @@ export const getAllUsers = async (req: ModifiedRequest, res: Response): Promise<
     query: { offset, limit },
   } = req;
 
-  const users = await getUsersFromDb(Number(offset ?? 0), Number(limit ?? 10));
+  const users = await getUsersFromDb(Number(offset), Number(limit));
 
   return res.json(users.map((u) => ({ id: u.id, login: u.login })));
 };

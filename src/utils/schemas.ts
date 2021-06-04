@@ -26,8 +26,8 @@ export const updatePostSchema = {
 
 export const getQuerySchema = {
   query: zod.object({
-    offset: zod.string().max(6),
-    limit: zod.string().max(6),
+    offset: zod.string().max(6).default('0'),
+    limit: zod.string().max(6).default('10'),
   }),
 };
 

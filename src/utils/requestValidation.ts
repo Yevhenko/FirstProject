@@ -4,15 +4,15 @@ import { ModifiedRequest, RequestSchema } from '../constants/interface';
 export const validateRequest =
   (schema: RequestSchema) =>
   async (req: ModifiedRequest, res: Response, next: NextFunction): Promise<Response | void> => {
-    const map = Object.entries(schema).map(async ([schemaId, schema]) => [
-      schemaId,
-      //@ts-expect-error
-      await schema.safeParseAsync(req[schemaId]),
-    ]);
+    const map = await Promise.all(
+      Object.entries(schema).map(async ([schemaId, schema]) => [
+        schemaId,
+        //@ts-expect-error
+        await schema.safeParseAsync(req[schemaId]),
+      ]),
+    );
 
-    const validationResponseEntries = await Promise.all(map);
-
-    const data = validationResponseEntries.reduce(
+    const data = map.reduce(
       (acc: { succeeded: Array<any>; failed: Array<any> }, [schemaId, result]) => {
         result.success ? acc.succeeded.push([schemaId, result.data]) : acc.failed.push([schemaId, result.error]);
 

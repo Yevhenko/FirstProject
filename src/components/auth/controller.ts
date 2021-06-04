@@ -31,9 +31,6 @@ export const signIn = async (req: ModifiedRequest, res: Response): Promise<Respo
   const { body, sessionID, session } = req;
   const { login, password } = body;
 
-  if (!login || !password) {
-    return res.status(400).send('Bad request');
-  }
   const user = await userService.getUserByLogin(login);
 
   if (!user) return res.status(403).send('Login or password mismatch');
