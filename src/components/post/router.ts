@@ -1,13 +1,13 @@
 import express from 'express';
 import { createPost, deletePost, getAllPosts, getOnePost, updatePost } from './controller';
-import { validateBody, validateParams, validateQuery } from '../../utils/requestValidation';
-import { paramsSchema, postBodySchema, querySchema } from '../../utils/schemas';
+import { validateRequest } from '../../utils/requestValidation';
+import { createPostSchema, getQuerySchema, paramsSchema, updatePostSchema } from '../../utils/schemas';
 
 export const post = express.Router();
 
 post
-  .post('/posts', validateBody(postBodySchema), createPost)
-  .get('/posts', validateQuery(querySchema), getAllPosts)
-  .get('/posts/:id', validateParams(paramsSchema), getOnePost)
-  .delete('/posts/:id', validateParams(paramsSchema), deletePost)
-  .patch('/posts/:id', validateParams(paramsSchema), validateBody(postBodySchema), updatePost);
+  .post('/posts', validateRequest(createPostSchema), createPost)
+  .get('/posts', validateRequest(getQuerySchema), getAllPosts)
+  .get('/posts/:id', validateRequest(paramsSchema), getOnePost)
+  .delete('/posts/:id', validateRequest(paramsSchema), deletePost)
+  .patch('/posts/:id', validateRequest(updatePostSchema), updatePost);
