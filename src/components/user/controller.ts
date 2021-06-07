@@ -1,8 +1,7 @@
-import { Response } from 'express';
-import { ModifiedRequest } from '@constants/interfaces';
+import { Request, Response } from 'express';
 import { getUsersFromDb } from './services';
 
-export const getAllUsers = async (req: ModifiedRequest, res: Response): Promise<Response> => {
+export const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
   const {
     query: { offset, limit },
   } = req;

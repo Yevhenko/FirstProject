@@ -5,6 +5,7 @@
   },
   "include": ["."],
   "compilerOptions": {
+    "typeRoots": ["@types"],
     "target": "es2018",
     "lib": ["es2020", "es2019", "es5", "es6"],
     "esModuleInterop": true,

@@ -1,10 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import { constants } from '@constants/constatnts';
 import { userService } from '@components/user';
-import { ModifiedRequest } from '@constants/interfaces';
 import { getDataFromRedis } from './services';
 
-export const auth = async (req: ModifiedRequest, res: Response, next: NextFunction): Promise<Response | void> => {
+export const auth = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   const { cookies } = req;
 
   const sessionId = cookies[constants.COOKIES_KEY];

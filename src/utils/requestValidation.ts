@@ -1,9 +1,9 @@
-import { NextFunction, Response } from 'express';
-import { ModifiedRequest, RequestSchema } from '@constants/interfaces';
+import { NextFunction, Request, Response } from 'express';
+import { RequestSchema } from '@constants/interfaces';
 
 export const validateRequest =
   (schema: RequestSchema) =>
-  async (req: ModifiedRequest, res: Response, next: NextFunction): Promise<Response | void> => {
+  async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
     const map = await Promise.all(
       Object.entries(schema).map(async ([schemaId, schema]) => [
         schemaId,
