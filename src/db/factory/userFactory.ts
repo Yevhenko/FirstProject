@@ -1,11 +1,13 @@
 import Faker from 'faker';
-import { User } from '@components/user/models/User';
 import { define } from 'typeorm-seeding';
+import { User } from '@components/user/models/User';
+import { createHashedPassword } from '@components/user/services';
 
-define(User, (faker: typeof Faker) => {
+// @ts-ignore
+define(User, async (faker: typeof Faker) => {
   const user = new User();
   user.login = faker.name.findName();
-  user.password = faker.random.word();
+  user.password = await createHashedPassword('password');
 
   return user;
 });

@@ -5,7 +5,7 @@ import { Connection } from 'typeorm';
 
 export class CreatePost implements Seeder {
   async run(factory: Factory, connection: Connection) {
-    const user = await factory(User)().createMany(20);
-    await factory(Post)({ user }).createMany(80);
+    const user = await factory(User)().createMany(1);
+    await factory(Post)({ user: user.reduce((acc, item) => item, {}) }).createMany(10);
   }
 }

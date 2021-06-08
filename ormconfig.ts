@@ -3,7 +3,7 @@ import { env } from './src/config/config';
 module.exports = {
   type: 'postgres',
   host: env.DB_HOST,
-  port: 5432,
+  port: env.DB_PORT,
   username: env.DB_USER,
   password: env.DB_PSWD,
   database: env.DB_BASE,
