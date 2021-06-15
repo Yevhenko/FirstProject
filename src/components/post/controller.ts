@@ -1,32 +1,28 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import * as service from './service';
-import { ModifiedRequest } from '../../constants/interface';
 
-export const getAllPosts = async (req: ModifiedRequest, res: Response): Promise<Response> => {
+export const getAllPosts = async (req: Request, res: Response): Promise<Response> => {
   const {
     query: { offset, limit },
   } = req;
 
-  const posts = await service.getAllPostsFromDb(Number(offset ?? 0), Number(limit ?? 10));
+  const posts = await service.getAllPostsFromDb(Number(offset), Number(limit));
 
   return res.json(posts.map((p) => ({ id: p.id, title: p.title, text: p.text })));
 };
 
-export const createPost = async (req: ModifiedRequest, res: Response): Promise<Response> => {
+export const createPost = async (req: Request, res: Response): Promise<Response> => {
   const {
     body: { title, text },
     user,
   } = req;
 
-  if (!title || !text) return res.status(400).send('bad request');
-
-  if (!user) return res.status(400).send('bad request');
   const post = await service.createPostInDb({ title, text, user });
 
-  return res.json({ id: post?.id, title: post?.title, text: post?.text, userId: post?.user.id });
+  return res.json({ id: post?.id, title: post?.title, text: post?.text, userId: post?.user?.id });
 };
 
-export const getOnePost = async (req: ModifiedRequest, res: Response): Promise<Response> => {
+export const getOnePost = async (req: Request, res: Response): Promise<Response> => {
   const { params } = req;
   const postId = Number(params.id);
 
@@ -35,7 +31,7 @@ export const getOnePost = async (req: ModifiedRequest, res: Response): Promise<R
   return res.json(post);
 };
 
-export const updatePost = async (req: ModifiedRequest, res: Response): Promise<Response> => {
+export const updatePost = async (req: Request, res: Response): Promise<Response> => {
   const {
     body: { title, text },
     params,
@@ -50,7 +46,7 @@ export const updatePost = async (req: ModifiedRequest, res: Response): Promise<R
   return res.status(200).send();
 };
 
-export const deletePost = async (req: ModifiedRequest, res: Response): Promise<Response> => {
+export const deletePost = async (req: Request, res: Response): Promise<Response> => {
   const { params } = req;
 
   const postId = Number(params.id);

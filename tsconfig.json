@@ -5,11 +5,9 @@
   },
   "include": ["."],
   "compilerOptions": {
-    "lib": [
-      "es5",
-      "es6"
-    ],
+    "typeRoots": ["@types"],
     "target": "es2018",
+    "lib": ["es2020", "es2019", "es5", "es6"],
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -20,6 +18,10 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
+      "@components/*": ["src/components/*"],
+      "@config/*": ["src/config/*"],
+      "@utils/*": ["src/utils/*"],
+      "@constants/*": ["src/constants/*"]
       "@components/*": ["src/components/*"],
     }
   }

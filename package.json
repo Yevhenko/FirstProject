@@ -1,9 +1,5 @@
 {
   "name": "firstproject",
-  "jest": {
-    "verbose": true,
-    "rootDir": "src"
-  },
   "version": "1.0.0",
   "description": "My first project",
   "main": "src/index.ts",
@@ -16,7 +12,9 @@
     "typeorm:dev": "NODE_ENV=development ts-node ./node_modules/.bin/typeorm --config ormconfig.ts",
     "typeorm": "ts-node ./node_modules/.bin/typeorm",
     "migration:generate": "npm run typeorm -- migration:generate --config src/config/ormconfig.ts --connection  --name ",
-    "migration:run": "npm run typeorm -- migration:run"
+    "migration:run": "npm run typeorm -- migration:run",
+    "seeder:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
+    "seeder:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
   },
   "repository": {
     "type": "git",
@@ -42,6 +40,10 @@
     "ts-dotenv": "^0.8.3",
     "typeorm": "^0.2.32",
     "uuid": "^8.3.2"
+    "typeorm-seeding": "^1.6.1",
+    "un": "*",
+    "uuid": "^8.3.2",
+    "zod": "^3.1.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
