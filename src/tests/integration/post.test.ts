@@ -1,13 +1,13 @@
 import { Connection, getConnection } from 'typeorm';
 import request from 'supertest';
-import { app } from '../../index';
-import { constants } from '../../constants/constatnts';
+import { constants } from '@constants/constants';
 import { User } from '@components/user/models/User';
 import { Post } from '@components/post/models/Post';
-import { createTypeormConnection } from '../../db/createConnection';
 import { createUser, getUserByIdFromDb } from '@components/user/services';
 import { removeDataFromRedis, setDataToRedis } from '@components/auth/services';
-import { createPostInDb, getUserIdOfThePost } from '@components/post/service';
+import { createPostInDb } from '@components/post/service';
+import { createTypeormConnection } from '../../db/createConnection';
+import { app } from '../../index';
 
 describe('posts routes', () => {
   let connection: Connection;
@@ -40,7 +40,7 @@ describe('posts routes', () => {
     await connection.close();
   });
 
-  describe('create post', () => {
+  describe.skip('create post', () => {
     it('create post - success', async () => {
       const res = await request(app)
         .post('/posts')
@@ -52,56 +52,65 @@ describe('posts routes', () => {
       expect(res.body).not.toEqual(testPost);
     });
 
-    describe('get posts', () => {
-      it('get many posts - success', async () => {
-        const res = await request(app).get('/posts').set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`);
+    it('create post - no title', async () => {
+      const res = await request(app)
+        .post('/posts')
+        .set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`)
+        .send(testPost.text);
 
-        expect(res.status).toEqual(200);
-      });
+      expect(res.status).toEqual(400);
+      expect(res.body).toHaveProperty('Errors');
     });
 
-    describe('get one post', () => {
-      it('get one post - success', async () => {
-        const res = await request(app).get('/posts/1').set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`);
+    it('create post - no text', async () => {
+      const res = await request(app)
+        .post('/posts')
+        .set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`)
+        .send(testPost.title);
 
-        expect(res.status).toEqual(200);
-      });
+      expect(res.status).toEqual(400);
+      expect(res.body).toHaveProperty('Errors');
     });
+  });
 
-    describe('update post', () => {
-      it('update one post - success', async () => {
-        const updatePost = { title: 'newTitle' };
-        const res = await request(app)
-          .patch('/posts/1')
-          .set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`)
-          .send(updatePost);
+  describe.skip('get posts', () => {
+    it('get many posts - success', async () => {
+      const res = await request(app).get('/posts').set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`);
 
-        expect(res.status).toEqual(200);
-      });
-
-      // it('failed to get credentials to update', async () => {
-      //   const updatePost = { title: 'newTitle' };
-      //   const res = await request(app)
-      //     .patch('/posts/5')
-      //     .set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`)
-      //     .send(updatePost);
-      //
-      //   expect(res).toThrow();
-      // });
+      expect(res.status).toEqual(200);
+      expect(res.body).not.toBeNull();
+      expect(res.body.length).toBeGreaterThanOrEqual(1);
+      expect(res.body[0].id).not.toBeNull();
+      expect(res.body[0].title).not.toBeNull();
+      expect(res.body[0].text).not.toBeNull();
     });
+  });
 
-    describe('delete post', () => {
-      it('delete one post - success', async () => {
-        const res = await request(app).patch('/posts/1').set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`);
+  describe.skip('get one post', () => {
+    it('get one post - success', async () => {
+      const res = await request(app).get('/posts/1').set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`);
 
-        expect(res.status).toEqual(200);
-      });
+      expect(res.status).toEqual(200);
+    });
+  });
 
-      // it('failed to get credentials to delete', async () => {
-      //   const res = await request(app).patch('/posts/7').set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`);
-      //
-      //   expect(res).toThrow();
-      // });
+  describe.skip('update post', () => {
+    it('update one post - success', async () => {
+      const updatePost = (testPost.title = 'newTitle');
+      const res = await request(app)
+        .patch('/posts/1')
+        .set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`)
+        .send(updatePost);
+
+      expect(res.status).toEqual(200);
+    });
+  });
+
+  describe.skip('delete post', () => {
+    it('delete one post - success', async () => {
+      const res = await request(app).delete('/posts/1').set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`);
+
+      expect(res.status).toEqual(200);
     });
   });
 });

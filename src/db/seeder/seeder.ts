@@ -1,7 +1,7 @@
-import { User } from '@components/user/models/User';
-import { Post } from '@components/post/models/Post';
 import { Factory, Seeder } from 'typeorm-seeding';
 import { Connection } from 'typeorm';
+import { User } from '@components/user/models/User';
+import { Post } from '@components/post/models/Post';
 
 export class CreatePost implements Seeder {
   async run(factory: Factory, connection: Connection) {

@@ -1,13 +1,12 @@
 import 'reflect-metadata';
 import express from 'express';
 import session from 'express-session';
-import cookieParser = require('cookie-parser');
+import cookieParser from 'cookie-parser';
 import connectRedis from 'connect-redis';
 import bodyParser from 'body-parser';
-import { env, redisClient } from './config/config';
+import { env, redisClient } from '@config/config';
 import { router } from './router';
 import { createTypeormConnection } from './db/createConnection';
-import { createConnection } from 'typeorm';
 
 declare module 'express-session' {
   interface SessionData {

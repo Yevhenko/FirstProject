@@ -19,15 +19,15 @@ describe.skip('auth routes', () => {
 
       expect(res.status).toEqual(200);
       expect(res.headers.cookie).not.toBeNull();
+      expect(res.body).not.toBeNull();
     });
 
     it('without login', (done) => {
       request(app)
         .post('/auth/sign-up')
         .send(testData.password)
-        .expect(400)
         .then((res) => {
-          expect(res.text).toEqual('Bad request');
+          expect(res.body).toHaveProperty('Errors');
 
           done();
         });
@@ -40,17 +40,5 @@ describe.skip('auth routes', () => {
 
       done();
     });
-  });
-
-  it('without password', (done) => {
-    request(app)
-      .post('/auth/sign-up')
-      .send(testData.login)
-      .expect(400)
-      .then((res) => {
-        expect(res.text).toEqual('Bad request');
-
-        done();
-      });
   });
 });
