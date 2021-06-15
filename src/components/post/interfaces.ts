@@ -1,4 +1,4 @@
-import { User } from '../user/models/User';
+import { User } from '@components//user';
 
 export interface IPost {
   id?: number;
