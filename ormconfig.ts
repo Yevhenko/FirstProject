@@ -1,18 +1,53 @@
 import { env } from './src/config/config';
 
-module.exports = {
-  type: 'postgres',
-  host: env.DB_HOST,
-  port: env.DB_PORT,
-  username: env.DB_USER,
-  password: env.DB_PSWD,
-  database: env.DB_BASE,
-  synchronize: false,
-  logging: false,
-  entities: ['src/components/user/models/*.ts', 'src/components/post/models/*.ts'],
-  migrations: ['src/db/migration/*.ts'],
-  cli: {
-    entitiesDir: 'src/components/user/models',
-    migrationsDir: 'src/db/migration',
+export = [
+  {
+    name: 'default',
+    type: 'postgres',
+    host: env.DB_HOST,
+    port: env.DB_PORT,
+    username: env.DB_USER,
+    password: env.DB_PSWD,
+    database: env.DB_BASE,
+    synchronize: false,
+    logging: true,
+    entities: ['src/components/user/models/*.ts', 'src/components/post/models/*.ts'],
+    migrations: ['src/db/migration/*.ts'],
+    cli: {
+      entitiesDir: 'src/components/user/models',
+      migrationsDir: 'src/db/migration',
+    },
   },
-};
+  {
+    name: 'development',
+    type: 'postgres',
+    host: env.DB_HOST,
+    port: env.DB_PORT,
+    username: env.DB_USER,
+    password: env.DB_PSWD,
+    database: env.DB_BASE,
+    synchronize: false,
+    logging: true,
+    entities: ['src/components/user/models/*.ts', 'src/components/post/models/*.ts'],
+    migrations: ['src/db/migration/*.ts'],
+    cli: {
+      entitiesDir: 'src/components/user/models',
+      migrationsDir: 'src/db/migration',
+    },
+  },
+  {
+    name: 'test',
+    type: 'postgres',
+    host: '127.0.0.1',
+    port: 5432,
+    username: 'postgres',
+    password: 'postgres',
+    database: 'test',
+    synchronize: false,
+    logging: false,
+    dropSchema: true,
+    migrationsRun: true,
+    entities: ['src/components/user/models/*.ts', 'src/components/post/models/*.ts'],
+    migrations: ['src/db/migration/*.ts'],
+  },
+];

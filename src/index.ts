@@ -4,9 +4,10 @@ import session from 'express-session';
 import cookieParser = require('cookie-parser');
 import connectRedis from 'connect-redis';
 import bodyParser from 'body-parser';
-import { createConnection } from 'typeorm';
 import { env, redisClient } from './config/config';
 import { router } from './router';
+import { createTypeormConnection } from './db/createConnection';
+import { createConnection } from 'typeorm';
 
 declare module 'express-session' {
   interface SessionData {
@@ -14,7 +15,7 @@ declare module 'express-session' {
   }
 }
 
-const app = express();
+export const app = express();
 const port = env.APP_PORT;
 
 const RedisStore = connectRedis(session);
@@ -37,14 +38,17 @@ app.use(
     cookie: { secure: true, maxAge: 60000 },
   }),
 );
+
 app.use(router);
 
-createConnection()
-  .then(async () => {
-    console.log('Connection to db is successful');
+if (process.env.NODE_ENV !== 'test') {
+  createTypeormConnection()
+    .then(() => {
+      console.log('Connection to db is successful');
 
-    app.listen(port, () => {
-      return console.log(`Server is listening on ${port}`);
-    });
-  })
-  .catch((error) => console.error(error));
+      app.listen(port, () => {
+        return console.log(`Server is listening on ${port}`);
+      });
+    })
+    .catch((error) => console.error(error));
+}
