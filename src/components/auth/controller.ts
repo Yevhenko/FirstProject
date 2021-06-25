@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { userService } from '@components/user';
-import { constants } from '@constants/constatnts';
+import { constants } from '@constants/constants';
 import { setDataToRedis } from './services';
 
 export const signUp = async (req: Request, res: Response): Promise<Response> => {
@@ -39,6 +39,6 @@ export const signIn = async (req: Request, res: Response): Promise<Response | vo
     await setDataToRedis(sessionID, JSON.stringify(session));
     res.cookie(constants.COOKIES_KEY, sessionID);
 
-    return res.status(200).send();
+    return res.sendStatus(200);
   }
 };

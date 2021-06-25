@@ -9,8 +9,8 @@ export const createPostSchema = {
 
 export const updatePostSchema = {
   body: zod.object({
-    title: zod.string(),
-    text: zod.string(),
+    title: zod.string().optional(),
+    text: zod.string().optional(),
   }),
   params: zod.object({
     id: zod.string().max(6),

@@ -40,10 +40,10 @@ export const updatePost = async (req: Request, res: Response): Promise<Response>
   const postId = Number(params.id);
   const userId = await service.getUserIdOfThePost(postId);
 
-  if (userId !== req.user?.id) return res.status(403).send('forbidden');
+  if (userId !== req.user?.id) return res.sendStatus(403);
   await service.updatePostInDb(postId, title, text);
 
-  return res.status(200).send();
+  return res.sendStatus(200);
 };
 
 export const deletePost = async (req: Request, res: Response): Promise<Response> => {
@@ -52,8 +52,8 @@ export const deletePost = async (req: Request, res: Response): Promise<Response>
   const postId = Number(params.id);
   const userId = await service.getUserIdOfThePost(postId);
 
-  if (userId !== req.user?.id) return res.status(403).send('forbidden');
+  if (userId !== req.user?.id) return res.sendStatus(403);
   await service.deletePostFromDb(postId);
 
-  return res.status(200).send();
+  return res.sendStatus(200);
 };
