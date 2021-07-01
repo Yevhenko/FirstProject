@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { getRepository, createQueryBuilder } from 'typeorm';
 import { Post } from './models/Post';
 import { IPost } from './interfaces';
 
@@ -10,12 +10,7 @@ export const createPostInDb = async (data: IPost): Promise<IPost> => {
 };
 
 export const getPostById = async (id: number): Promise<Post> => {
-  const postRepo = await getRepository(Post);
-  const post = await postRepo
-    .createQueryBuilder('post')
-    .where('post.id = :id', { id })
-    .select(['post.id', 'post.title', 'post.text', 'post.userId', 'post.createdAt', 'post.updatedAt'])
-    .execute();
+  const post = await createQueryBuilder().select(['post']).from(Post, 'post').where('post.id = :id', { id }).getOne();
 
   if (!post) throw new Error('post not found');
 
@@ -27,9 +22,7 @@ export const getAllPostsFromDb = async (
   limit: number,
 ): Promise<{ id: number; text: string; title: string }[]> => {
   const postRepo = await getRepository(Post);
-  const posts = await postRepo.createQueryBuilder('post').skip(offset).take(limit).getMany();
-
-  return posts;
+  return await postRepo.createQueryBuilder('post').skip(offset).take(limit).getMany();
 };
 
 export const updatePostInDb = async (id: number, title?: string, text?: string): Promise<void | null> => {
@@ -44,11 +37,11 @@ export const updatePostInDb = async (id: number, title?: string, text?: string):
 export const deletePostFromDb = async (id: number) => await getRepository(Post).delete(id);
 
 export const getUserIdOfThePost = async (postId: number): Promise<Error | number> => {
-  const userId = await getRepository(Post)
-    .createQueryBuilder('post')
+  const userId = await createQueryBuilder('post')
+    .select('post.userId')
+    .from(Post, 'post')
     .leftJoinAndSelect('post.user', 'user')
     .where('post.id = :id', { id: postId })
-    .select('post.userId')
     .execute();
 
   if (userId.length === 0) throw new Error('userId not found');

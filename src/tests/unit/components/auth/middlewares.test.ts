@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import { auth } from '@components/auth/middlewares';
-import { constants } from '@constants/constants';
 import { getDataFromRedis } from '@components/auth/services';
 import { userService } from '@components/user';
 
