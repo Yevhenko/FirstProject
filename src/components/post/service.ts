@@ -3,14 +3,14 @@ import { Post } from './models/Post';
 import { IPost } from './interfaces';
 
 export const createPostInDb = async (data: IPost): Promise<IPost> => {
-  const postRepo = await getRepository(Post);
+  const postRepo = getRepository(Post);
   const post = await postRepo.create(data);
 
   return await postRepo.save(post);
 };
 
 export const getPostById = async (id: number): Promise<Post> => {
-  const postRepo = await getRepository(Post);
+  const postRepo = getRepository(Post);
   const post = await postRepo
     .createQueryBuilder('post')
     .where('post.id = :id', { id })
@@ -33,7 +33,7 @@ export const getAllPostsFromDb = async (
 };
 
 export const updatePostInDb = async (id: number, title?: string, text?: string): Promise<void | null> => {
-  const postRepo = await getRepository(Post);
+  const postRepo = getRepository(Post);
   const post = await postRepo.findOne({ where: { id } });
 
   if (!post) throw new Error('no post');

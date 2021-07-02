@@ -1,4 +1,4 @@
-import { constants } from '@constants/constatnts';
+import { constants } from '@constants/constants';
 import { User } from '@components/user';
 
 declare global {

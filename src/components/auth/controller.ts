@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { userService } from '@components/user';
-import { constants } from '@constants/constatnts';
+import { constants } from '@constants/constants';
 import { setDataToRedis } from './services';
 
 export const signUp = async (req: Request, res: Response): Promise<Response> => {

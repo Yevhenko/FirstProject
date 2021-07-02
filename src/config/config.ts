@@ -12,10 +12,11 @@ export const env = load({
   SECRET: String,
   REDIS_PORT: Number,
   REDIS_HOST: String,
+  REDIS_TEST_HOST: String,
   SALT: Number,
 });
 
 export const redisClient = new Redis({
   port: env.REDIS_PORT,
-  host: env.REDIS_HOST,
+  host: process.env.NODE_ENV === 'test' ? env.REDIS_TEST_HOST : env.REDIS_HOST,
 });

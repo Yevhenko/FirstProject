@@ -26,7 +26,7 @@ export class Post {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @ManyToOne(() => User, (user) => user.posts, { eager: true, cascade: true })
+  @ManyToOne(() => User, (user) => user.posts, { eager: true, cascade: true, onDelete: 'CASCADE' })
   @JoinColumn()
   user!: User;
 }
