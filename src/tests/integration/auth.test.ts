@@ -101,7 +101,6 @@ describe.skip('integration tests', () => {
   describe('create post', () => {
     beforeAll(async () => {
       const user = await createUser(testData);
-      console.log(user);
       const userForPost = await getUserByIdFromDb(user.id);
       await createPostInDb({ user: userForPost, ...testPost });
       const session = {

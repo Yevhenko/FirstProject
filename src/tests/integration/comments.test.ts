@@ -5,10 +5,11 @@ import { Post } from '@components/post';
 import { User } from '@components/user';
 import { app } from '../../index';
 import { createTypeormConnection } from '../../db/createConnection';
+import { removeAllDataFromRedis, setDataToRedis } from '@components/auth/services';
+import { createUser } from '@components/user/services';
 
 describe('comments', () => {
   let connection: Connection;
-  const testCommentData = { text: 'someText' };
 
   const cookieObj = {
     cookieKey: constants.COOKIES_KEY,
@@ -17,18 +18,33 @@ describe('comments', () => {
 
   const testUser = { id: 1, login: 'Yevhen', password: 'Svyrydov' };
   const testPost = { id: 1, title: 'someTitle', text: 'someText', userId: 1 };
-  const testComment = { id: 1, text: 'anyText', userId: 1, postId: 1 };
+  const testComment = {
+    id: 1,
+    text: 'anyText',
+    userId: 1,
+    postId: 1,
+    createdAt: 1625235619486,
+    updatedAt: 1625235619486,
+  };
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     connection = await createTypeormConnection();
     await getConnection().createQueryBuilder().delete().from(Post).execute();
     await getConnection().createQueryBuilder().delete().from(User).execute();
+
+    const user = await createUser(testUser);
+
+    const session = {
+      userId: user.id,
+    };
+    await setDataToRedis(cookieObj.cookie, JSON.stringify(session));
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await getConnection();
     await getConnection().createQueryBuilder().delete().from(Post).execute();
     await getConnection().createQueryBuilder().delete().from(User).execute();
+    await removeAllDataFromRedis();
 
     await connection.close();
   });
@@ -38,34 +54,48 @@ describe('comments', () => {
       const res = await request(app)
         .post('/comments')
         .set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`)
-        .send(testCommentData);
+        .send(testComment.text);
 
       expect(res.status).toEqual(200);
       expect(res.body).not.toBeNull();
-      expect(res.body).not.toEqual(testComment);
-    });
-
-    it('create comment - no text', async () => {
-      const res = await request(app)
-        .post('/posts')
-        .set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`)
-        .send(testPost.text);
-
-      expect(res.status).toEqual(400);
-      expect(res.body).toHaveProperty('Errors');
+      expect(res.body).toEqual(testComment);
     });
   });
 
   describe('getting one comment', () => {
     it('the comment has been got', async () => {
-      const res = await request(app)
-        .get('/comments/1')
-        .set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`)
-        .send(testCommentData);
+      const res = await request(app).get(`/comments/1`).set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`);
 
       expect(res.status).toEqual(200);
       expect(res.body).not.toBeNull();
-      expect(res.body).not.toEqual(testComment);
+      expect(res.body).toEqual(testComment);
+    });
+  });
+
+  describe('getting all comments', () => {
+    it('the comment has been got', async () => {
+      const res = await request(app).get(`/comments`).set('Cookie', `${cookieObj.cookieKey}=${cookieObj.cookie}`);
+
+      expect(res.status).toEqual(200);
+      expect(res.body).not.toBeNull();
+      expect(res.body).toEqual([
+        {
+          id: 1,
+          text: 'anyText',
+          postId: 1,
+          userId: 1,
+          createdAt: 1625235619486,
+          updatedAt: 1625235619486,
+        },
+        {
+          id: 2,
+          text: 'oneMoreText',
+          postId: 1,
+          userId: 1,
+          createdAt: 1625235619486,
+          updatedAt: 1625235619486,
+        },
+      ]);
     });
   });
 
@@ -79,7 +109,6 @@ describe('comments', () => {
 
       expect(res.status).toEqual(200);
       expect(res.body).not.toBeNull();
-      expect(res.body).not.toEqual(testComment);
     });
   });
 
