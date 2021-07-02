@@ -3,7 +3,7 @@ import { setDataToRedis } from '@components/auth/services';
 const mocks = { redis: null };
 jest.mock('ioredis', () => {
   const Redis = require('ioredis-mock');
-  console.log(Redis);
+
   if (typeof Redis === 'object') {
     return {
       Command: { _transformer: { argument: {}, reply: {} } },
