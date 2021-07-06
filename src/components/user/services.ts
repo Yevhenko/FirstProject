@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm';
-import { hash, compare } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { env } from '@config/config';
 import { User } from './models/User';
 import { IUser } from './interfaces';
@@ -16,9 +16,7 @@ export const getUserByLogin = async (login: string): Promise<IUser | undefined> 
 
 export const getUsersFromDb = async (offset: number, limit: number): Promise<IUser[]> => {
   const userRepo = getRepository(User);
-  const users = await userRepo.createQueryBuilder('user').skip(offset).take(limit).getMany();
-
-  return users;
+  return await userRepo.createQueryBuilder('user').skip(offset).take(limit).getMany();
 };
 
 export const getUserByIdFromDb = async (id: number | undefined): Promise<User> => {

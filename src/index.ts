@@ -19,7 +19,7 @@ const port = env.APP_PORT;
 
 const RedisStore = connectRedis(session);
 redisClient.on('error', function (err: Error) {
-  console.log('Could not establish a connection with redis. ' + err);
+  console.log(`Could not establish a connection with redis. ${err}`);
 });
 redisClient.on('connect', function (err: Error) {
   console.log('Connected to redis successfully');

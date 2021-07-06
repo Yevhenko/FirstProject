@@ -3,12 +3,12 @@ import { Connection, getConnection } from 'typeorm';
 import { constants } from '@constants/constants';
 import { Post } from '@components/post';
 import { User } from '@components/user';
-import { app } from '../../index';
-import { createTypeormConnection } from '../../db/createConnection';
 import { removeAllDataFromRedis, setDataToRedis } from '@components/auth/services';
 import { createUser } from '@components/user/services';
+import { app } from '../../index';
+import { createTypeormConnection } from '../../db/createConnection';
 
-describe('comments', () => {
+describe.skip('comments', () => {
   let connection: Connection;
 
   const cookieObj = {
@@ -101,6 +101,7 @@ describe('comments', () => {
 
   describe('updating comment', () => {
     it('the comment has been updated', async () => {
+      // eslint-disable-next-line no-multi-assign
       const update = (testComment.text = 'newText');
       const res = await request(app)
         .patch('/comments/1')
@@ -114,6 +115,7 @@ describe('comments', () => {
 
   describe('delete comment', () => {
     it('the comment has been deleted', async () => {
+      // eslint-disable-next-line no-multi-assign
       const update = (testComment.text = 'newText');
       const res = await request(app)
         .delete('/comments/1')

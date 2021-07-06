@@ -1,7 +1,6 @@
 import express from 'express';
-import { authRouter } from '@components/auth';
+import { authRouter, authMiddlewares } from '@components/auth';
 import { userRouter } from '@components/user';
-import { authMiddlewares } from '@components/auth';
 import { postRouter } from '@components/post';
 import { commentRouter } from '@components/comment';
 

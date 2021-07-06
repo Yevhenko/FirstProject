@@ -1,13 +1,13 @@
 import request from 'supertest';
-import { Connection, getConnection, Migration } from 'typeorm';
+import { Connection, getConnection } from 'typeorm';
 import { removeAllDataFromRedis, setDataToRedis } from '@components/auth/services';
 import { User } from '@components/user';
-import { app } from '../../index';
-import { createTypeormConnection } from '../../db/createConnection';
 import { constants } from '@constants/constants';
 import { createUser, getUserByIdFromDb } from '@components/user/services';
 import { createPostInDb } from '@components/post/service';
 import { Post } from '@components/post';
+import { createTypeormConnection } from '../../db/createConnection';
+import { app } from '../../index';
 
 describe.skip('integration tests', () => {
   let connection: Connection;
