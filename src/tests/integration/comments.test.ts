@@ -8,7 +8,7 @@ import { createUser } from '@components/user/services';
 import { app } from '../../index';
 import { createTypeormConnection } from '../../db/createConnection';
 
-describe.skip('comments', () => {
+describe('comments', () => {
   let connection: Connection;
 
   const cookieObj = {
