@@ -11,7 +11,11 @@ export = [
     database: env.DB_BASE,
     synchronize: false,
     logging: true,
-    entities: ['src/components/user/models/*.ts', 'src/components/post/models/*.ts'],
+    entities: [
+      'src/components/user/models/*.ts',
+      'src/components/post/models/*.ts',
+      'src/components/comment/models/*.ts',
+    ],
     migrations: ['src/db/migration/*.ts'],
     cli: {
       entitiesDir: 'src/components/user/models',
@@ -28,7 +32,11 @@ export = [
     database: env.DB_BASE,
     synchronize: false,
     logging: true,
-    entities: ['src/components/user/models/*.ts', 'src/components/post/models/*.ts'],
+    entities: [
+      'src/components/user/models/*.ts',
+      'src/components/post/models/*.ts',
+      'src/components/comment/models/*.ts',
+    ],
     migrations: ['src/db/migration/*.ts'],
     cli: {
       entitiesDir: 'src/components/user/models',
@@ -47,7 +55,11 @@ export = [
     logging: false,
     dropSchema: true,
     migrationsRun: true,
-    entities: ['src/components/user/models/*.ts', 'src/components/post/models/*.ts'],
+    entities: [
+      'src/components/user/models/*.ts',
+      'src/components/post/models/*.ts',
+      'src/components/comment/models/*.ts',
+    ],
     migrations: ['src/db/migration/*.ts'],
   },
 ];
