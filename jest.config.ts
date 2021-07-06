@@ -186,9 +186,9 @@ export default {
 
   moduleNameMapper: {
     '@components/(.*)': '<rootDir>/src/components/$1',
-    "@config/(.*)": '<rootDir>/src/config/$1',
-    "@utils/(.*)": '<rootDir>/src/utils/$1',
-    "@constants/(.*)": '<rootDir>/src/constants/$1'
+    '@config/(.*)': '<rootDir>/src/config/$1',
+    '@utils/(.*)': '<rootDir>/src/utils/$1',
+    '@constants/(.*)': '<rootDir>/src/constants/$1',
   },
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
