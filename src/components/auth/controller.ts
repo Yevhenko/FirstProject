@@ -12,15 +12,14 @@ export const signUp = async (req: Request, res: Response): Promise<Response> => 
 
   if (existingUser) {
     return res.status(403).send('User already exists');
-  } else {
-    const user = await userService.createUser({ login, password: hashedPass });
-    session.userId = user.id;
-    await setDataToRedis(sessionID, JSON.stringify(session));
-
-    res.cookie(constants.COOKIES_KEY, sessionID);
-
-    return res.json({ id: user.id, login: user.login });
   }
+  const user = await userService.createUser({ login, password: hashedPass });
+  session.userId = user.id;
+  await setDataToRedis(sessionID, JSON.stringify(session));
+
+  res.cookie(constants.COOKIES_KEY, sessionID);
+
+  return res.json({ id: user.id, login: user.login });
 };
 
 export const signIn = async (req: Request, res: Response): Promise<Response | void> => {
@@ -34,11 +33,10 @@ export const signIn = async (req: Request, res: Response): Promise<Response | vo
 
   if (!passwordMatch) {
     return res.status(403).send('Login or password mismatch');
-  } else {
-    session.userId = user.id;
-    await setDataToRedis(sessionID, JSON.stringify(session));
-    res.cookie(constants.COOKIES_KEY, sessionID);
-
-    return res.sendStatus(200);
   }
+  session.userId = user.id;
+  await setDataToRedis(sessionID, JSON.stringify(session));
+  res.cookie(constants.COOKIES_KEY, sessionID);
+
+  return res.sendStatus(200);
 };

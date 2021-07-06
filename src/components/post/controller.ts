@@ -18,7 +18,6 @@ export const createPost = async (req: Request, res: Response): Promise<Response>
   } = req;
 
   const post = await service.createPostInDb({ title, text, user });
-
   return res.json({ id: post?.id, title: post?.title, text: post?.text, userId: post?.user?.id });
 };
 

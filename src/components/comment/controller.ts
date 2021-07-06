@@ -2,7 +2,12 @@ import { Request, Response } from 'express';
 import * as service from './service';
 
 export const createComment = async (req: Request, res: Response): Promise<Response> => {
-  const comment = await service.createCommentInDb();
+  const {
+    body: { text },
+    user,
+    post,
+  } = req;
+  const comment = await service.createCommentInDb({ text, user, post });
   return res.json(comment);
 };
 

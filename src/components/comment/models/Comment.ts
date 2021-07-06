@@ -26,9 +26,9 @@ export class Comment {
 
   @ManyToOne(() => Post, (post) => post.comments, { eager: true, cascade: true })
   @JoinColumn()
-  post!: Comment;
+  post!: Post;
 
   @ManyToOne(() => User, (user) => user.comments, { eager: true, cascade: true })
   @JoinColumn()
-  user!: Comment;
+  user!: User;
 }
