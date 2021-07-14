@@ -31,7 +31,7 @@ jest.mock('typeorm', () => {
   };
 });
 
-describe('testing services of the Comment', () => {
+describe.skip('testing services of the Comment', () => {
   const mockRepo = getRepository as jest.MockedFunction<any>;
 
   const mockComment = { id: 1, text: 'someText' };
@@ -53,7 +53,7 @@ describe('testing services of the Comment', () => {
 
   const mockData = { id: 1, text: 'someText', user: mockUser, post: mockPost };
 
-  describe('testing creation Comment', () => {
+  describe.skip('testing creation Comment', () => {
     it('should succeed', async () => {
       mockRepo.mockReturnValue({
         create: jest.fn(jest.fn().mockResolvedValue(mockComment)),
@@ -68,7 +68,7 @@ describe('testing services of the Comment', () => {
     });
   });
 
-  describe('testing getting Comment', () => {
+  describe.skip('testing getting Comment', () => {
     it('should succeed', async () => {
       typeorm.createQueryBuilder = jest.fn().mockReturnValue({
         select: jest.fn().mockReturnThis(),
