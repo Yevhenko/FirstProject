@@ -1,8 +1,14 @@
 import { Request, Response } from 'express';
+import { getPostById } from '@components/post/service';
 import * as service from './service';
 
 export const createComment = async (req: Request, res: Response): Promise<Response> => {
-  const comment = await service.createCommentInDb();
+  const {
+    body: { text, postId },
+    user,
+  } = req;
+  const post = await getPostById(postId);
+  const comment = await service.createCommentInDb({ text, user, post });
   return res.json(comment);
 };
 
@@ -16,7 +22,11 @@ export const getOneComment = async (req: Request, res: Response): Promise<Respon
 };
 
 export const getAllComments = async (req: Request, res: Response): Promise<Response> => {
-  const response = await service.getAllCommentsFromDb();
+  const {
+    query: { offset, limit },
+  } = req;
+
+  const response = await service.getAllCommentsFromDb(Number(offset), Number(limit));
 
   return res.json(response);
 };
@@ -26,16 +36,23 @@ export const updateComment = async (req: Request, res: Response): Promise<Respon
   const { text } = body;
 
   const commentId = Number(params.id);
-  const response = await service.updateCommentInDb(commentId, text);
 
-  return res.json(response);
+  const userId = await service.getUserIdOfTheComment(commentId);
+
+  if (userId !== req.user.id) return res.sendStatus(403);
+  await service.updateCommentInDb(commentId, text);
+
+  return res.sendStatus(200);
 };
 
 export const deleteComment = async (req: Request, res: Response): Promise<Response> => {
   const { params } = req;
 
   const commentId = Number(params.id);
-  const response = await service.deleteComment(commentId);
+  const userId = await service.getUserIdOfTheComment(commentId);
 
-  return res.json(response);
+  if (userId !== req.user.id) return res.sendStatus(403);
+  await service.deleteCommentFromDb(commentId);
+
+  return res.sendStatus(200);
 };

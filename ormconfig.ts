@@ -1,4 +1,4 @@
-import { env } from './src/config/config';
+import { env } from '@config/config';
 
 export = [
   {
