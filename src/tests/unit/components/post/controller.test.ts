@@ -29,6 +29,13 @@ describe('testing post controllers', () => {
     id: 1,
     title: 'someTitle',
     text: 'someText',
+    userId: 1,
+  };
+
+  const user = {
+    id: 1,
+    login: 'someLogin',
+    password: 'somePassword',
     createdAt: Date.now(),
     updatedAt: Date.now(),
   };
@@ -49,13 +56,13 @@ describe('testing post controllers', () => {
 
   describe.skip('createPost', () => {
     it('success case', async () => {
-      const mReq = { body };
+      const mReq = { body, user };
       const mRes = { json: jest.fn() };
 
       (postService.createPostInDb as jest.MockedFunction<any>).mockResolvedValue(post);
       await createPost(mReq as unknown as Request, mRes as unknown as Response);
 
-      expect(postService.createPostInDb).toHaveBeenCalledWith({ title: post.title, text: post.text });
+      expect(postService.createPostInDb).toHaveBeenCalledWith({ title: post.title, text: post.text, user });
       expect(mRes.json).toHaveBeenCalledWith({ id: post.id, title: post.title, text: post.text });
     });
   });
