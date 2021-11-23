@@ -10,7 +10,7 @@ export const signUp = async (req: Request, res: Response): Promise<Response> => 
   const existingUser = await userService.getUserByLogin(login);
   const hashedPass = await userService.createHashedPassword(password);
 
-  if (existingUser) {
+  if (existingUser!.length > 0) {
     return res.status(403).send('User already exists');
   }
   const user = await userService.createUser({ login, password: hashedPass });
@@ -28,13 +28,14 @@ export const signIn = async (req: Request, res: Response): Promise<Response | vo
 
   const user = await userService.getUserByLogin(login);
 
-  if (!user) return res.status(403).send('Login or password mismatch');
-  const passwordMatch = await userService.compareHashedPasswords(password, user.password);
+  if (user!.length === 0) return res.status(403).send('Login or password mismatch');
+  console.log(user![0].password);
+  const passwordMatch = await userService.compareHashedPasswords(password, user![0].password);
 
   if (!passwordMatch) {
     return res.status(403).send('Login or password mismatch');
   }
-  session.userId = user.id;
+  session.userId = user![0].id;
   await setDataToRedis(sessionID, JSON.stringify(session));
   res.cookie(constants.COOKIES_KEY, sessionID);
 

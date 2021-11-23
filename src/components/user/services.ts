@@ -1,21 +1,27 @@
-import { getRepository, createQueryBuilder } from 'typeorm';
+import { createQueryBuilder, getManager, getRepository } from 'typeorm';
 import { compare, hash } from 'bcrypt';
 import { env } from '@config/config';
 import { User } from './models/User';
+
 import { IUser } from './interfaces';
 
 export const createUser = async (data: IUser): Promise<IUser> => {
-  const userRepo = getRepository(User);
-  const user = await userRepo.create(data);
+  const entityManager = getManager();
+  await entityManager.query(`INSERT INTO "user" ("login", "password") VALUES ('${data.login}', '${data.password}')`);
 
-  return await userRepo.save(user);
+  return entityManager.query(`SELECT * FROM "user" WHERE "login" = '${data.login}'`);
 };
 
-export const getUserByLogin = async (login: string): Promise<IUser | undefined> =>
-  await getRepository(User).findOne({ where: { login } });
+export const getUserByLogin = async (login: string): Promise<IUser[] | null> => {
+  const entityManager = getManager();
+  const user = await entityManager.query(`SELECT * FROM "user" WHERE "login" = '${login}'`);
+  if (!user) return null;
+  return user;
+};
 
 export const getUsersFromDb = async (offset: number, limit: number): Promise<IUser[]> => {
-  return await createQueryBuilder().from(User, 'user').skip(offset).take(limit).getMany();
+  const entityManager = getManager();
+  return await entityManager.query(`SELECT * FROM "user" LIMIT ${limit} OFFSET ${offset}`);
 };
 
 export const getUserByIdFromDb = async (id: number | undefined): Promise<User> => {
