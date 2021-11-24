@@ -17,9 +17,9 @@ export const auth = async (req: Request, res: Response, next: NextFunction): Pro
     const session = JSON.parse(data);
     const user = await userService.getUserByIdFromDb(session.userId);
 
-    if (!user) return res.status(500).json('user not found');
+    if (user.length === 0) return res.status(500).json('user not found');
 
-    req.user = user;
+    req.user = user[0];
     return next();
   }
   return res.status(401).json('invalid sign-in');

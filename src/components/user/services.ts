@@ -24,11 +24,9 @@ export const getUsersFromDb = async (offset: number, limit: number): Promise<IUs
   return await entityManager.query(`SELECT * FROM "user" LIMIT ${limit} OFFSET ${offset}`);
 };
 
-export const getUserByIdFromDb = async (id: number | undefined): Promise<User> => {
-  const userRepo = getRepository(User);
-  const user = await userRepo.findOne({
-    where: { id },
-  });
+export const getUserByIdFromDb = async (id: number | undefined): Promise<User[]> => {
+  const entityManager = getManager();
+  const user = await entityManager.query(`SELECT * FROM "user" WHERE "id" = '${id}'`);
   if (!user) throw new Error('no user');
 
   return user;
